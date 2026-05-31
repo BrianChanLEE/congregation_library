@@ -59,7 +59,7 @@ export const SideNavBar: React.FC = () => {
                     {item.subItems?.map(sub => (
                       <NavLink
                         key={sub.label}
-                        to={sub.path}
+                        to={sub.path as string}
                         className={({ isActive }) =>
                           `rounded-full p-sm pl-lg flex items-center gap-md cursor-pointer transition-all text-sm ${
                             isActive 
@@ -76,7 +76,7 @@ export const SideNavBar: React.FC = () => {
               </>
             ) : (
               <NavLink
-                to={item.path}
+                to={item.path as string}
                 className={({ isActive }) =>
                   `rounded-full p-md flex items-center gap-md cursor-pointer transition-all ${
                     isActive 

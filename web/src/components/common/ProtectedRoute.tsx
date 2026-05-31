@@ -1,19 +1,19 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 
 interface ProtectedRouteProps {
   requiredRole?: 'admin' | 'user';
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) => {
-  const { token, userRole } = useAuthStore();
+  const { token, role } = useAuthStore();
 
   if (!token) {
     return <Navigate to="/login" replace />;
   }
 
-  if (requiredRole && userRole !== requiredRole) {
+  if (requiredRole && role !== requiredRole.toUpperCase()) {
     return <Navigate to="/" replace />;
   }
 
