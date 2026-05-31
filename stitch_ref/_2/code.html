@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Noto+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#091d2e",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#00210c",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#f8f9fa",
+                    "secondary-fixed": "#cce5ff",
+                    "inverse-surface": "#2e3132",
+                    "surface": "#f8f9fa",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#96a9be",
+                    "secondary-container": "#77c2ff",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#7efba4",
+                    "tertiary-container": "#004721",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#d9dadb",
+                    "on-primary-fixed-variant": "#36485b",
+                    "tertiary": "#002e14",
+                    "on-tertiary-container": "#3cbe6e",
+                    "on-secondary-fixed-variant": "#004b73",
+                    "primary-fixed-dim": "#b5c8df",
+                    "inverse-primary": "#b5c8df",
+                    "primary-fixed": "#d1e4fb",
+                    "surface-container": "#edeeef",
+                    "background": "#f8f9fa",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#92ccff",
+                    "tertiary-fixed-dim": "#61de8a",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#191c1d",
+                    "on-primary": "#ffffff",
+                    "outline": "#74777d",
+                    "primary": "#162839",
+                    "surface-tint": "#4e6073",
+                    "on-background": "#191c1d",
+                    "secondary": "#006497",
+                    "surface-variant": "#e1e3e4",
+                    "on-tertiary-fixed-variant": "#005228",
+                    "surface-container-low": "#f3f4f5",
+                    "inverse-on-surface": "#f0f1f2",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-surface-variant": "#43474c",
+                    "on-secondary-fixed": "#001e31",
+                    "primary-container": "#2c3e50",
+                    "surface-container-high": "#e7e8e9",
+                    "on-secondary-container": "#004f79",
+                    "outline-variant": "#c4c6cd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "container-max": "1200px",
+                    "base": "4px",
+                    "sm": "8px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "xl": "40px"
+            },
+            "fontFamily": {
+                    "headline-sm": ["Hanken Grotesk"],
+                    "body-sm": ["Noto Sans"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "body-lg": ["Noto Sans"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-md": ["Noto Sans"],
+                    "label-md": ["Noto Sans"]
+            },
+            "fontSize": {
+                    "headline-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-sm": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .modal-overlay {
+            background-color: rgba(25, 28, 29, 0.4);
+            backdrop-filter: blur(4px);
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md text-body-md overflow-hidden">
+<!-- Modal Backdrop -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-md modal-overlay" id="modal-container">
+<!-- Modal Content -->
+<div class="bg-surface-container-lowest w-full max-w-[500px] rounded-xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-300 flex flex-col max-h-[921px]">
+<!-- Header Image Section -->
+<div class="relative h-64 w-full bg-surface-container">
+<img alt="Item Detail Image" class="w-full h-full object-cover" data-alt="A high-quality, close-up photograph of professional audiovisual equipment and paper supplies organized neatly in a modern, brightly lit storage space. The lighting is clean and soft, emphasizing a high-density, minimal aesthetic. The color palette features neutral greys and crisp whites with a hint of deep navy tones, creating a professional and trustworthy atmosphere for a library inventory system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4CPVY4ImsQ4OsYyH9CkWFfTyrPs008p_LAZaU8kvAP2ug-cAw2wIXKy_7DCFNwG_WVhfeGZ1YRUCnJYVJr_IxmhnxiAxqVnimdemeEQGb6QR2Uit3pCXTn2VX855QML9mypP9kVKCqgijl861LdTYGdy7ryV6IgoMw--d-_bqKevUer2zynunHChmjBBo3TKyb4bRAEqYPoneLy5_rOHztEad4Ae7MRTNBttIDQYYG7bzJS7tKAMxcQbK1kwRvyPI1oSqmnmiqTQ"/>
+<button class="absolute top-md right-md bg-surface/80 hover:bg-surface text-on-surface p-base rounded-full transition-colors flex items-center justify-center" onclick="closeModal()">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<div class="absolute bottom-md left-md">
+<span class="bg-primary text-white font-label-md text-label-md px-sm py-[4px] rounded-full uppercase tracking-wider">Inventory</span>
+</div>
+</div>
+<!-- Content Body -->
+<div class="flex-1 overflow-y-auto p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h1 class="font-headline-md text-headline-md text-primary">고급 인쇄용지 (A4)</h1>
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface-variant">현재 재고</span>
+<span class="font-headline-sm text-headline-sm text-secondary">42 박스</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md mb-lg leading-relaxed">
+                    프리미엄 80g 인쇄용지로, 모든 표준 레이저 및 잉크젯 프린터에 최적화되어 있습니다. 고해상도 출력물과 일상적인 문서 출력 모두에 적합하며, 변색 방지 처리가 되어 있어 장기 보관용 문서에도 안심하고 사용할 수 있습니다.
+                </p>
+<div class="bg-surface-container-low p-md rounded-lg border border-outline-variant mb-lg">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">info</span>
+<span class="font-label-md text-label-md text-on-surface-variant">가져갈 수량 선택</span>
+</div>
+<!-- Quantity Picker (Big Controls) -->
+<div class="flex items-center justify-between gap-md">
+<button class="w-14 h-14 flex items-center justify-center bg-surface-container-highest hover:bg-surface-variant text-on-surface rounded-xl transition-all active:scale-90" onclick="changeQty(-1)">
+<span class="material-symbols-outlined text-[28px]">remove</span>
+</button>
+<div class="flex-1 text-center">
+<input class="w-full text-center font-headline-md text-headline-md bg-transparent border-none focus:ring-0 text-primary" id="qty-input" max="42" min="1" onchange="validateInput(this)" type="number" value="1"/>
+<div class="h-[2px] bg-primary mx-auto w-16 mt-xs"></div>
+</div>
+<button class="w-14 h-14 flex items-center justify-center bg-surface-container-highest hover:bg-surface-variant text-on-surface rounded-xl transition-all active:scale-90" onclick="changeQty(1)">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="p-lg pt-0 flex gap-md">
+<button class="flex-1 py-md rounded-xl font-label-md text-label-md bg-surface-variant text-on-surface-variant hover:bg-outline-variant transition-colors" onclick="closeModal()">
+                    취소
+                </button>
+<!-- Brand Primary Color: #2C3E50 used via primary-container -->
+<button class="flex-[2] py-md rounded-xl font-headline-sm text-headline-sm bg-primary-container text-white hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-sm" onclick="confirmTake()">
+<span class="material-symbols-outlined">inventory_2</span>
+                    가져가기
+                </button>
+</div>
+</div>
+</div>
+<script>
+        function changeQty(delta) {
+            const input = document.getElementById('qty-input');
+            let currentVal = parseInt(input.value);
+            const newVal = currentVal + delta;
+            
+            if (newVal >= 1 && newVal <= 42) {
+                input.value = newVal;
+                animateInput();
+            }
+        }
+
+        function validateInput(input) {
+            let val = parseInt(input.value);
+            if (isNaN(val) || val < 1) input.value = 1;
+            if (val > 42) input.value = 42;
+            animateInput();
+        }
+
+        function animateInput() {
+            const input = document.getElementById('qty-input');
+            input.classList.add('scale-110');
+            setTimeout(() => input.classList.remove('scale-110'), 150);
+        }
+
+        function closeModal() {
+            const container = document.getElementById('modal-container');
+            container.classList.add('opacity-0');
+            container.children[0].classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                // In a real app, you'd navigate or remove the component
+                console.log('Modal closed');
+            }, 300);
+        }
+
+        function confirmTake() {
+            const qty = document.getElementById('qty-input').value;
+            alert(`${qty}개의 품목을 가져가기 요청했습니다.`);
+            closeModal();
+        }
+
+        // Close on backdrop click
+        document.getElementById('modal-container').addEventListener('click', (e) => {
+            if (e.target.id === 'modal-container') closeModal();
+        });
+    </script>
+</body></html>

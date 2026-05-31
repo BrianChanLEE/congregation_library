@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QR 스캔 - KH Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Noto+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#091d2e",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#00210c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-fixed": "#cce5ff",
+                        "inverse-surface": "#2e3132",
+                        "surface": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#96a9be",
+                        "secondary-container": "#77c2ff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#7efba4",
+                        "tertiary-container": "#004721",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-fixed-variant": "#36485b",
+                        "tertiary": "#002e14",
+                        "on-tertiary-container": "#3cbe6e",
+                        "on-secondary-fixed-variant": "#004b73",
+                        "primary-fixed-dim": "#b5c8df",
+                        "inverse-primary": "#b5c8df",
+                        "primary-fixed": "#d1e4fb",
+                        "surface-container": "#edeeef",
+                        "background": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#92ccff",
+                        "tertiary-fixed-dim": "#61de8a",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "outline": "#74777d",
+                        "primary": "#162839",
+                        "surface-tint": "#4e6073",
+                        "on-background": "#191c1d",
+                        "secondary": "#006497",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-surface-variant": "#43474c",
+                        "on-secondary-fixed": "#001e31",
+                        "primary-container": "#2c3e50",
+                        "surface-container-high": "#e7e8e9",
+                        "on-secondary-container": "#004f79",
+                        "outline-variant": "#c4c6cd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "container-max": "1200px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-sm": ["Noto Sans"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Noto Sans"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-md": ["Noto Sans"],
+                        "label-md": ["Noto Sans"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanner-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            clip-path: polygon(0% 0%, 0% 100%, 50% 100%, 50% 70%, 15% 70%, 15% 30%, 85% 30%, 85% 70%, 50% 70%, 50% 100%, 100% 100%, 100% 0%);
+        }
+        @keyframes scan-line {
+            0% { top: 30%; }
+            100% { top: 70%; }
+        }
+        .animate-scan {
+            animation: scan-line 2.5s linear infinite;
+        }
+        .qr-corner {
+            width: 32px;
+            height: 32px;
+            border-color: #77c2ff;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-hidden">
+<!-- Top Navigation Bar (Mobile Focused) -->
+<header class="fixed top-0 left-0 w-full z-50 bg-primary-container text-white px-md h-16 flex items-center justify-between border-b border-white/10 shadow-lg">
+<div class="flex items-center gap-md">
+<button class="p-sm hover:bg-white/10 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined text-white">close</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm font-bold tracking-tight">QR 스캔</h1>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-sm hover:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">flash_on</span>
+</button>
+<button class="p-sm hover:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Scanner Content -->
+<main class="relative h-screen w-full flex flex-col items-center justify-center pt-16">
+<!-- Camera Live Feed Simulation -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale-[0.2]" data-alt="A blurred background view of a modern library or archive storage system with rows of neatly organized books and white shelving. The lighting is bright and clean with a professional atmosphere, featuring soft bokeh effects and a sophisticated navy and white color palette to match the KH Library UI theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMTxEXB5m_8jila5_zC2RS9ESLFCp1YjGUsgVsHkQ7DWRlbDETmYi4uVM1wVWuu4s2jz3cYDRXOxfVYLcX6CsISmP_xXznbsHuDogrRssV4xXDCOyV-c2z92ZH4W4WTBjqkZX0FqhTItMxwXb-bGQFJObVDhB5fCum6nqNVkgULuy-hRyqdQCzjirm86mga-SMIPQPYWBSG5SPbyzBm_XLgx8h5EkbD3JyXRKTPUd8x3S8g3Oot_r_z78G9rPYtMTrguTYzuhWOjo"/>
+</div>
+<!-- Dark Overlay with Hole -->
+<div class="absolute inset-0 z-10 bg-black/60 pointer-events-none">
+<!-- Center Hole Simulation through clipping/flex -->
+<div class="w-full h-full flex items-center justify-center">
+<div class="relative w-64 h-64 md:w-80 md:h-80">
+<!-- Laser Line -->
+<div class="absolute left-0 w-full h-[2px] bg-secondary-container/80 shadow-[0_0_15px_rgba(119,194,255,1)] z-20 animate-scan"></div>
+<!-- Corners -->
+<div class="absolute top-0 left-0 qr-corner border-t-4 border-l-4 rounded-tl-lg"></div>
+<div class="absolute top-0 right-0 qr-corner border-t-4 border-r-4 rounded-tr-lg"></div>
+<div class="absolute bottom-0 left-0 qr-corner border-b-4 border-l-4 rounded-bl-lg"></div>
+<div class="absolute bottom-0 right-0 qr-corner border-b-4 border-r-4 rounded-br-lg"></div>
+</div>
+</div>
+</div>
+<!-- Instructions & Actions -->
+<div class="relative z-20 w-full max-w-md px-lg flex flex-col items-center text-center">
+<div class="mb-xl bg-black/40 backdrop-blur-md border border-white/20 p-md rounded-xl text-white">
+<p class="font-label-md text-label-md mb-xs text-secondary-fixed">준비 완료</p>
+<p class="font-body-md text-body-md opacity-90">책의 바코드나 QR 코드를 사각형 안에 위치시켜 주세요.</p>
+</div>
+<div class="mt-auto w-full space-y-md mb-xl">
+<!-- Permission Check Card -->
+<div class="bg-surface-container-low/95 dark:bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">camera</span>
+</div>
+<div class="text-left">
+<h3 class="font-label-md text-label-md text-on-surface">카메라 권한 필요</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">스캔을 위해 카메라 접근 권한을 허용해 주세요.</p>
+</div>
+<button class="ml-auto text-primary font-bold text-label-md px-sm py-xs hover:bg-primary/5 rounded-lg transition-colors">권한 확인</button>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<button class="flex flex-col items-center justify-center gap-xs bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/30 py-md px-lg rounded-xl transition-all active:scale-95">
+<span class="material-symbols-outlined text-headline-sm">keyboard</span>
+<span class="font-label-md text-label-md">수동 입력</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-xs bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/30 py-md px-lg rounded-xl transition-all active:scale-95">
+<span class="material-symbols-outlined text-headline-sm">image</span>
+<span class="font-label-md text-label-md">앨범에서 선택</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Shared Component) - Hidden in focused Scan view as per rules but placed for context -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm py-xs bg-surface dark:bg-surface-container-lowest border-t border-outline-variant hidden">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="local_library">local_library</span>
+<span class="font-label-md text-label-md-mobile">Public</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="inventory">inventory</span>
+<span class="font-label-md text-label-md-mobile">My Items</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="qr_code_2">qr_code_2</span>
+<span class="font-label-md text-label-md-mobile">Scan</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md-mobile">History</span>
+</div>
+</nav>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Flash toggle effect
+            const flashBtn = document.querySelector('button span:contains("flash_on")')?.parentElement;
+            if (flashBtn) {
+                flashBtn.addEventListener('click', () => {
+                    const icon = flashBtn.querySelector('span');
+                    if (icon.innerText === 'flash_on') {
+                        icon.innerText = 'flash_off';
+                        flashBtn.classList.add('bg-white/30');
+                    } else {
+                        icon.innerText = 'flash_on';
+                        flashBtn.classList.remove('bg-white/30');
+                    }
+                });
+            }
+
+            // Simple scale on touch
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('touchstart', () => {
+                    btn.classList.add('scale-95');
+                });
+                btn.addEventListener('touchend', () => {
+                    btn.classList.remove('scale-95');
+                });
+            });
+        });
+    </script>
+</body></html>

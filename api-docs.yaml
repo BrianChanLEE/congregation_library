@@ -1,0 +1,349 @@
+openapi: 3.0.0
+info:
+  title: 서적 관리 API
+  version: 1.0.0
+  description: 서적 관리 프로젝트의 백엔드 API 명세서입니다.
+
+paths:
+  /api/auth/register:
+    post:
+      summary: 사용자 회원가입
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, password]
+              properties:
+                name: {type: string}
+                password: {type: string}
+      responses:
+        '201': {description: 가입 성공}
+        '500': {description: 서버 오류}
+
+  /api/auth/login:
+    post:
+      summary: 사용자 로그인
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [jwhub_email, password]
+              properties:
+                jwhub_email: {type: string}
+                password: {type: string}
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: {type: string}
+                  userId: {type: integer}
+                  role: {type: string, enum: [user, admin]}
+        '401': {description: 인증 실패}
+
+  /api/catalog:
+    get:
+      summary: 전체 물품 목록 조회
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: {type: integer}
+                    name: {type: string}
+                    code: {type: string}
+
+  /api/catalog/categories:
+    get:
+      summary: 카테고리 목록 조회
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {type: string}
+
+  /api/admin/items:
+    post:
+      summary: 품목 추가
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, code]
+              properties:
+                name: {type: string}
+                code: {type: string}
+      responses:
+        '201': {description: 추가 성공}
+    get:
+      summary: 전체 품목 목록 조회
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: {type: integer}
+                    name: {type: string}
+                    code: {type: string}
+  /api/admin/items/{id}:
+    put:
+      summary: 품목 수정
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, code]
+              properties:
+                name: {type: string}
+                code: {type: string}
+      responses:
+        '200': {description: 수정 성공}
+    delete:
+      summary: 품목 삭제 (Soft Delete)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      responses:
+        '200': {description: 삭제 성공}
+
+  /api/transactions:
+    post:
+      summary: 입고/출고 거래 생성
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_id, item_id, quantity, type, method]
+              properties:
+                user_id: {type: integer}
+                item_id: {type: integer}
+                quantity: {type: integer}
+                type: {type: string, enum: [IN, OUT]}
+                method: {type: string, enum: [WEB, QR]}
+                memo: {type: string}
+      responses:
+        '201': {description: 거래 성공}
+
+  /api/history:
+    get:
+      summary: 전체 활동 내역 조회 (타임라인용)
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: {type: integer}
+                    created_at: {type: string}
+                    user_name: {type: string}
+                    item_name: {type: string}
+                    quantity: {type: integer}
+                    type: {type: string}
+                    method: {type: string}
+                    memo: {type: string}
+
+  /api/admin/stats:
+    get:
+      summary: 어드민 대시보드 통계 조회
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_items: {type: integer}
+                  recent_activity_count: {type: integer}
+                  pending_user_count: {type: integer}
+
+  /api/admin/users/pending:
+    get:
+      summary: 가입 대기 사용자 목록 조회
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: {type: integer}
+                    name: {type: string}
+                    jwhub_email: {type: string}
+                    status: {type: string}
+  /api/admin/users/{id}/status:
+    put:
+      summary: 사용자 승인 상태 변경
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: {type: string, enum: [APPROVED, REJECTED]}
+      responses:
+        '200': {description: 상태 변경 성공}
+  /api/admin/users/{id}:
+    delete:
+      summary: 사용자 삭제 (Soft Delete)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      responses:
+        '200': {description: 삭제 성공}
+
+  /api/admin/announcements:
+    get:
+      summary: 공지사항 목록 조회
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: {type: integer}
+                    title: {type: string}
+                    content: {type: string}
+                    author_id: {type: integer}
+                    created_at: {type: string}
+    post:
+      summary: 공지사항 등록
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, content, author_id]
+              properties:
+                title: {type: string}
+                content: {type: string}
+                author_id: {type: integer}
+      responses:
+        '201': {description: 등록 성공}
+  /api/admin/announcements/{id}:
+    put:
+      summary: 공지사항 수정
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, content]
+              properties:
+                title: {type: string}
+                content: {type: string}
+      responses:
+        '200': {description: 수정 성공}
+    delete:
+      summary: 공지사항 삭제
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      responses:
+        '200': {description: 삭제 성공}
+
+  /api/admin/system-status:
+    get:
+      summary: 시스템 상태 모니터링 (에러 로그 요약 등)
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: {type: string}
+                  error_logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: {type: integer}
+                        error: {type: string}
+                        time: {type: string}
+                  system_time: {type: string}
+
+  /api/user/profile:
+    get:
+      summary: 사용자 프로필 조회
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: {type: integer}
+                  name: {type: string}
+                  role: {type: string}
+                  jwhub_email: {type: string}
+  /api/user/password:
+    put:
+      summary: 비밀번호 변경
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [current_password, new_password]
+              properties:
+                current_password: {type: string}
+                new_password: {type: string}
+      responses:
+        '200': {description: 변경 성공}

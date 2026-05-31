@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Noto+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#091d2e",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#00210c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-fixed": "#cce5ff",
+                        "inverse-surface": "#2e3132",
+                        "surface": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#96a9be",
+                        "secondary-container": "#77c2ff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#7efba4",
+                        "tertiary-container": "#004721",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-fixed-variant": "#36485b",
+                        "tertiary": "#002e14",
+                        "on-tertiary-container": "#3cbe6e",
+                        "on-secondary-fixed-variant": "#004b73",
+                        "primary-fixed-dim": "#b5c8df",
+                        "inverse-primary": "#b5c8df",
+                        "primary-fixed": "#d1e4fb",
+                        "surface-container": "#edeeef",
+                        "background": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#92ccff",
+                        "tertiary-fixed-dim": "#61de8a",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "outline": "#74777d",
+                        "primary": "#162839",
+                        "surface-tint": "#4e6073",
+                        "on-background": "#191c1d",
+                        "secondary": "#006497",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-surface-variant": "#43474c",
+                        "on-secondary-fixed": "#001e31",
+                        "primary-container": "#2c3e50",
+                        "surface-container-high": "#e7e8e9",
+                        "on-secondary-container": "#004f79",
+                        "outline-variant": "#c4c6cd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "container-max": "1200px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-sm": ["Noto Sans"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Noto Sans"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-md": ["Noto Sans"],
+                        "label-md": ["Noto Sans"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-md h-16 max-w-container-max mx-auto bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">KH Library</h1>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md transition-transform active:scale-95" href="#">Public</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md p-2 rounded" href="#">My Library</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md p-2 rounded" href="#">History</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-md py-md pb-24 md:pb-md flex gap-lg">
+<!-- SideNav (Desktop Only) -->
+<aside class="hidden lg:flex flex-col h-full p-md gap-sm bg-surface-container-low rounded-xl w-64 shrink-0">
+<div class="mb-lg">
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary">Kingdom Hall</h2>
+<p class="text-on-surface-variant font-label-md text-label-md opacity-70">Inventory System</p>
+</div>
+<nav class="flex flex-col gap-xs">
+<a class="flex items-center gap-md px-md py-3 bg-primary-container text-on-primary-container rounded-full transition-opacity active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-md text-label-md">Admin</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<button class="mt-xl w-full py-3 bg-primary text-on-primary rounded-full font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all">
+                Scan QR
+            </button>
+</aside>
+<!-- Content Canvas -->
+<div class="flex-1">
+<!-- Fixed Search & Filter Section -->
+<div class="sticky top-16 z-40 bg-background/95 backdrop-blur-md pb-md">
+<div class="flex flex-col gap-md">
+<!-- Search Bar -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</div>
+<input class="w-full pl-xl pr-md py-3 bg-white border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-xl transition-all outline-none text-body-md font-body-md shadow-sm" placeholder="품목 코드 또는 이름 검색..." type="text"/>
+</div>
+<!-- Category Tabs -->
+<div class="flex overflow-x-auto hide-scrollbar gap-sm">
+<button class="px-md py-2 whitespace-nowrap bg-primary text-on-primary rounded-full font-label-md text-label-md">전체</button>
+<button class="px-md py-2 whitespace-nowrap bg-white text-on-surface-variant border border-outline-variant hover:bg-surface-container-low rounded-full font-label-md text-label-md transition-colors">성서</button>
+<button class="px-md py-2 whitespace-nowrap bg-white text-on-surface-variant border border-outline-variant hover:bg-surface-container-low rounded-full font-label-md text-label-md transition-colors">봉사도구함</button>
+<button class="px-md py-2 whitespace-nowrap bg-white text-on-surface-variant border border-outline-variant hover:bg-surface-container-low rounded-full font-label-md text-label-md transition-colors">서적</button>
+<button class="px-md py-2 whitespace-nowrap bg-white text-on-surface-variant border border-outline-variant hover:bg-surface-container-low rounded-full font-label-md text-label-md transition-colors">잡지</button>
+</div>
+</div>
+</div>
+<!-- Bento Grid of Items -->
+<div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-md mt-sm">
+<!-- Item Card 1 -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Item Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist close-up shot of a thick, navy blue hardcover book with silver foil lettering on the spine, resting on a polished light grey stone surface. The lighting is bright and neutral, creating a serene and professional atmosphere characteristic of a modern library or research facility. The color palette is dominated by professional navy, clean whites, and subtle metallic silver accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzwn_WKxXGfEkLmTum3_okzEimiKRbq-CvZNzuBCbywfuOJLkrj9VOuwX8Hk_wwlN8xMeHU2cS4Dbk70ot2IIrL0Z0l7svlj1fDLTMy7R4W-62q3EhNVtbyHyuXUEi-lSxv08uztJSezkmhIEUMQ2fiIHsvBt0PwZggKT6odQ1oi8yISYKMHKcRVMe2JpyqvC3636jqsBvoqjA4F6K7tJ6oXWwBTivxeCZzUwLlFDOTQNuB7VqIzk3GRldhpsG-pOIAwjxqE8W7_Y"/>
+</div>
+<div class="p-md relative">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">신세계역 성경</h3>
+<p class="text-on-surface-variant text-body-sm opacity-70 mb-sm">Code: BI-12</p>
+<div class="absolute bottom-md right-md">
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-[10px] font-bold uppercase tracking-wider">충분</span>
+</div>
+</div>
+</div>
+<!-- Item Card 2 -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Item Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A collection of educational pamphlets and magazines stacked neatly in a contemporary minimalist desk environment. The materials feature clean layouts, bold typography, and a cohesive color scheme of muted blues and warm greys. Soft natural morning light streams from the side, highlighting the paper texture and the organized professional setting of a modern distribution center." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCu2wHjARY7K-aTtFL8ukbuPpDKyEg1r-XVRRL3eWLr0FGF0sSoFZN7p-kbsSgT9q67eE1dY_zFyM95JZtXgvlbgoKlL30WI4JrThcjYflCY0rnyAZcNe681l0Wb9qh3_TgZ-aQgnEUz_WzwZU-F3izJ2yrubX0MvLb4IilpjcyLofEfSjbddWksWQdnykaDH8zwVr6M6ax11qUCfXrhkO_EhnGhP1OLiHuxCCwIKXl__QZgvW76A6mqsXxSuGeNwF7lgRn_2Ap0QA"/>
+</div>
+<div class="p-md relative">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">파수대 2024년 1호</h3>
+<p class="text-on-surface-variant text-body-sm opacity-70 mb-sm">Code: W-2401</p>
+<div class="absolute bottom-md right-md">
+<span class="px-3 py-1 bg-error-container text-on-error-container rounded-full text-[10px] font-bold uppercase tracking-wider">부족</span>
+</div>
+</div>
+</div>
+<!-- Item Card 3 -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Item Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professional study guide or manual lying open on a sleek white desk with a thin silver pen beside it. The scene is captured in high-key lighting, emphasizing a clean and scholarly mood. The color palette is monochromatic with deep navy blues and bright whites, reflecting a focused and high-density information-centric design style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_yNXwnyarY4phPFq6krqAFxYsMK1cZP-Akbmp6Hhl1K7ATPs8ap80qeK2ACGfqMOmKC_loZdojkeX2ErndrtU_MyXk7OFdUlA12TbRD0j9hwxPBfLmvuymEbne76bVGzl9xwHej6iMMykia7qK47uupvioecYqAZH5bNSUQDGRbA20wXEKfv1aV4LOgvHWNPVtqXDWBGhdjILm4_viIjTpAqAYwtRIoOgj2j80dz1_0dmDSDLxJuvdQ7GcgDYUP8wRr-sjW-5hk0"/>
+</div>
+<div class="p-md relative">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">행복한 삶 공부</h3>
+<p class="text-on-surface-variant text-body-sm opacity-70 mb-sm">Code: LFF-01</p>
+<div class="absolute bottom-md right-md">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-bold uppercase tracking-wider">품절</span>
+</div>
+</div>
+</div>
+<!-- Item Card 4 -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Item Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A variety of colorful brochures and informational cards displayed in a clear acrylic stand against a soft-focus office background. The lighting is diffused and professional, showcasing the vibrant reds and deep blues of the publication covers. The overall aesthetic is one of order, accessibility, and modern organizational efficiency within a minimalist space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM9g0RovaWd5jENIxTDcwRBtl0O3iSN_GQffhGoKgUAzPhtuqZrmF5SuCkSDJVZw2W-3sbUIL0SVfsGHrXhenJ1MhEjre2jLlMbB2NW-0JInnaXroBaLqTZQDfNxFR6Ps7r0X-um68yB7FpZGxbl4OL989EthI1VkehtaGll3DOKrUeVGpUdD6zRv1ZYmhB5FYLUfKsmp9gdRmnaLozmH1v5nFCAhEBZE-ecluKh4r-6Q6V0ksCylw9DHglV-GL_gVPYITSKNfpxw"/>
+</div>
+<div class="p-md relative">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">봉사 전도지 세트</h3>
+<p class="text-on-surface-variant text-body-sm opacity-70 mb-sm">Code: T-30s</p>
+<div class="absolute bottom-md right-md">
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-[10px] font-bold uppercase tracking-wider">충분</span>
+</div>
+</div>
+</div>
+<!-- Repeat with more mock items to show density -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Item Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close up of a premium navy blue book with textured cover resting on a white wooden table. Elegant, simple, clean minimalism with soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_xkMylWRelG1px1CKJdVeAIu6N7I3slwbjxKtTOc3kMEJC9_xN4Huf9AAqM8LYBpucxenCsx7aPVXWMNF3AHKX8B9FXEzxX9oXngunE1XxOc1vIHkMx8Ad_oIOed3RcJUzyE55O2XhKk5sXOgDfpQwa_mOiOUsuehSDa08wnWkFwaWbfsfzAQabcJV_KE0KoStGt7HAbeF46_7GEuSNRwZ2zmkY5_40rPigGMch-H-5EIyJYOjswhin25b2DZtJc6XwpKGwMdD8k"/>
+</div>
+<div class="p-md relative">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">깨어라! 2024년호</h3>
+<p class="text-on-surface-variant text-body-sm opacity-70 mb-sm">Code: G-2402</p>
+<div class="absolute bottom-md right-md">
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-[10px] font-bold uppercase tracking-wider">충분</span>
+</div>
+</div>
+</div>
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Item Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Neat stack of books with minimalist covers in a library shelf setting. Bright light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7mL8uH1EQp_VA4uLcn6eDfczygtxN3PCyrySNmKqKLBhVb94QKARcxH-Guxjlc6WVG0S0Maah1gj8rz0Q1vxzqm3ZoHYV6-sh8sHMrE-CtIKduMNIHZdgDUpWJmqePe8gJUV2M7tDjhTAFKwxQk1i0-CEVcgvlmAPyNCEdzdEeSDWjsyYpUA33vwVQU3x52fLEWhlLMHJRKpqzI6gzkmOZEuxLUB7LCm7LoTn7rrwgGFGORqi1ttX6eKtUih0lFZxqSTfERdWItA"/>
+</div>
+<div class="p-md relative">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">성경 이야기 책</h3>
+<p class="text-on-surface-variant text-body-sm opacity-70 mb-sm">Code: LR-10</p>
+<div class="absolute bottom-md right-md">
+<span class="px-3 py-1 bg-error-container text-on-error-container rounded-full text-[10px] font-bold uppercase tracking-wider">부족</span>
+</div>
+</div>
+</div>
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Item Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Abstract shot of high-quality paper publication edges. Soft, clean light, professional navy and white theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZO4eo6FUdqmAHXojBds-H2xteba2-ljJlxh6U7CnTc2GpFaKqNhpY0VfKjElEosvi6grd75a-Rg4Ry3S0Af5x1eaFPvepxrDkrJ9cp3e2eKX8UZCxOY6cyaS3kKI1reRd8qOzRuhU_XdlhQpb-P_Ld2ngFl7RaPw28g3yyLJNH8SfjBUSKJHTn2uthCCEqzNeNPPoU9q91-nOoEIlwwUW_iXJhEvdnXGR0FvvNlCrtoGdguqGqjfLgGB2hw4jFKEuCIch3ATODBA"/>
+</div>
+<div class="p-md relative">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">봉사 구역 지도 상자</h3>
+<p class="text-on-surface-variant text-body-sm opacity-70 mb-sm">Code: BOX-05</p>
+<div class="absolute bottom-md right-md">
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-[10px] font-bold uppercase tracking-wider">충분</span>
+</div>
+</div>
+</div>
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Item Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Open white box containing neatly organized documents. Minimalist clean style with professional lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCJnDsCKj8OmAAMSCgRSgSeDbZsDYGXactmE_WK_t-7W91uJmepP-s1YH7w9Wxmzt75rPGbdHE8IDYf9PpBuHxe6qnlZpXZl7h8x6IMRp0pHFsaxIt3L4bX4R7A0tHhyHhof_52gMew5G75F7lc0WvqaRAL2nVx1bwlUgYe9Dwn3RLOSFpWsFDTZEsrQ6A5JiaU5ASewdoCwsVpjFmtaRJBFiweO-ig41rhxwmNqB7M2I9mT165Q9KYGIoFEIbfNrKvScDpEuRSsQ"/>
+</div>
+<div class="p-md relative">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">회중 기록 보관함</h3>
+<p class="text-on-surface-variant text-body-sm opacity-70 mb-sm">Code: AD-RE</p>
+<div class="absolute bottom-md right-md">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-bold uppercase tracking-wider">품절</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm py-xs bg-surface border-t border-outline-variant shadow-sm rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="local_library">local_library</span>
+<span class="font-label-md text-label-md">Public</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="inventory">inventory</span>
+<span class="font-label-md text-label-md">My Items</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="qr_code_2">qr_code_2</span>
+<span class="font-label-md text-label-md">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for hover effects on cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Search bar activation style
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.01]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.01]');
+        });
+
+        // Active tab switching simulation
+        const tabs = document.querySelectorAll('.flex.overflow-x-auto button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('bg-primary', 'text-on-primary');
+                    t.classList.add('bg-white', 'text-on-surface-variant', 'border', 'border-outline-variant');
+                });
+                tab.classList.remove('bg-white', 'text-on-surface-variant', 'border', 'border-outline-variant');
+                tab.classList.add('bg-primary', 'text-on-primary');
+            });
+        });
+    </script>
+</body></html>

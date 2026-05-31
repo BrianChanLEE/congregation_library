@@ -1,0 +1,119 @@
+# Project Standards: 서적 관리
+
+이 파일은 서적 관리 프로젝트의 아키텍처, 디자인 원칙 및 구현 스타일을 정의합니다. 모든 향후 작업은 이 가이드를 준수해야 합니다.
+
+## 0. 프로젝트 구조 (Project Structure)
+
+- **Root/web/**: 프론트엔드 (React, TypeScript, Vite)
+- **Root/backGo/**: 백엔드 (Go)
+  - `backGo/cmd/`: 진입점 (`backGo/cmd/api/main.go`)
+  - `backGo/internal/`: 백엔드 비즈니스 로직 및 내부 모듈
+- **루트 기타**: 프로젝트 설정 및 공통 리소스 (`DESIGN.md`, `Makefile` 등)
+
+## 1. 최우선 원칙 (Top Priority)
+
+- **Token Efficiency (Caveman Skill)**: 언제나 `caveman` 스킬을 활성화하여 응답을 압축하고 코인을 절약해야 합니다. 불필요한 미사여구를 제거하고 핵심 기술 정보만 전달하는 것이 모든 작업의 최우선 순위입니다.
+
+## 2. 디자인 철학 (Design Philosophy)
+
+- **100% Parity (시각적 일치 프로토콜)**:
+
+  - **기준**: `/stitch_ref` 내 `screen.png`(시각적 최종 상태).
+  - **검증 방식 (Pixel Overlap)**:
+
+    1. 구현된 컴포넌트 위에 `screen.png`를 반투명(50% Opacity)으로 겹쳐 배치한다.
+    2. 요소 간 간격(Spacing), 폰트 크기 및 위치, 컬러 영역이 픽셀 단위로 일치하는지 확인한다.
+    3. `DESIGN.md`의 토큰(Spacing/Color/Typography)을 우선 적용하고, 미세 조정을 위해 하드코딩된 값을 지양한다.
+
+  - **실패 정의**: `screen.png`와 렌더링 결과 간 시각적 윤곽(Outline)이 어긋나는 경우.
+
+- **DESIGN.md 준수**: 디자인 관련 작업을 수행할 때는 **언제나 프로젝트 루트의 `DESIGN.md`를 최우선으로 참고**하여 색상, 타이포그래피, 간격 규격을 맞춥니다.
+- **Modern Minimalism**: JW Library 스타일의 정갈하고 기능적인 디자인을 지향합니다.
+
+## 3. 필수 스킬 및 코딩 표준 (Mandatory Skills & Standards)
+
+모든 코드 작성 및 문제 해결 시 다음 스킬과 원칙을 **언제나** 적용합니다:
+
+### 공통 원칙
+
+- **Clean Code**: `clean-code` 원칙을 적용하여 가독성 높고 유지보수가 쉬운 코드를 작성합니다.
+- **Educational Comments**: `add-educational-comments`를 사용하여 **모든 소스 코드에 한국어로 친절한 주석**을 추가합니다.
+- **Conventional Commits**: 모든 커밋은 `feat:`, `fix:`, `docs:`, `db:`, `api-docs:` 등의 스코프를 명시하여 작성합니다.
+
+### Backend (Go) 구현 규칙
+
+- **Mandatory Skills**: 구현 시 `clean-code`, `golang-pro` 원칙을 철저히 준수합니다.
+- **Architecture (Separation of Concerns)**: 
+
+  - **Handler**: `backGo/internal/api/` - 요청 파싱 및 응답 반환.
+  - **Service**: `backGo/internal/service/` - 비즈니스 로직 처리. `Constructor Injection`으로 필요한 `Repository` 인터페이스를 주입받음.
+  - **Repository**: `backGo/internal/repository/` - DB 쿼리 및 데이터 액세스 캡슐화.
+  - **위반 정의**: `Handler`나 `Service`가 `db.*` (DB 패키지) 직접 호출 시 규칙 위반. DB 접근은 반드시 `Repository` 인터페이스를 통해서만 수행.
+
+- **Testing**: 모든 API 엔드포인트 및 서비스 로직에 대해 **Table-driven Unit Test 작성(`_test.go`)을 의무화**하며, 다음 기준을 충족해야 한다:
+    - 모든 테스트 코드는 각 패키지 하위의 `test/` 폴더에 저장한다.
+    - 커버리지 100% 달성.
+    - Happy path와 필수 에러 케이스(Input Validation, DB Error 등)를 반드시 포함하여 작성.
+    - **DB 검증**: 테스트 코드 작성 시 반드시 `/mysql` 스킬을 사용하여 관련 테이블 스키마를 확인 후 작성한다.
+- **DB Schema Integrity**: API 구현 시 `mysql` 스킬을 활성화하여 쿼리 성능을 체크하고, 반드시 `backGo/internal/db/schema.sql`의 최신 상태를 더블 체크합니다.
+- **Schema Versioning**: 테이블/컬럼 변경 시 `backGo/internal/db/schema.sql`에 즉시 반영하고 이력을 기록합니다.
+- **API Documentation**: 새로운 API 생성 시 반드시 `api-docs.yaml` (OpenAPI Spec)에 명세를 업데이트해야 합니다.
+- **Logging**: `backGo/internal/logger`를 사용하여 구조화된 로깅(Structured Logging)을 수행하며, 에러 발생 시 사용자 ID, 경로 등 컨텍스트를 포함합니다.
+- **Error Handling**: 클라이언트에게는 아래의 표준 에러 포맷을 반환합니다.
+
+  ```json
+  {
+    "code": "ERROR_CODE",
+    "message": "사용자 메시지 (한국어)",
+    "detail": "디버깅용 상세 정보"
+  }
+  ```
+
+### Frontend (React) 구현 규칙
+
+- **Mandatory Skills**: `vercel-react-best-practices`를 준수합니다.
+- **State Management**: 기능 단위로 분리된 `Zustand` 스토어를 사용합니다 (`web/src/store/`).
+- **Component Architecture (재사용 범위 기반)**:
+
+  - `ui/`: 재사용성 100%, 비즈니스 로직 없는 원자적 컴포넌트 (Shadcn UI 스타일).
+  - `common/`: 2개 이상의 기능(페이지)에서 재사용되는 비즈니스 로직 포함 컴포넌트 (NavBar 등).
+  - `features/`: 특정 기능 내에서만 사용되는 전용 컴포넌트 및 훅.
+  - `layouts/`: 페이지 전체 구조 레이아웃.
+
+- **Data Fetching**: `TanStack Query (React Query)`를 사용하여 서버 상태 관리 및 캐싱을 수행합니다.
+- **Styling**: Tailwind CSS v4를 사용하며, `cva` 및 `tailwind-merge`로 클래스를 관리합니다.
+- **Testing**: `Vitest` + `React Testing Library`를 사용하여 핵심 스토어 및 비즈니스 로직에 대한 테스트를 작성합니다 (백엔드와 동일한 수준의 엄격함).
+
+## 4. 기술 스택 및 스타일링
+
+- **Frontend**: React (TypeScript), Vite
+- **Styling**: Tailwind CSS v4 (`web/src/index.css`의 `@theme` 변수 사용)
+- **Icons**: Material Symbols Outlined (`FILL` 속성 활용)
+
+## 5. 구현 규칙 (Implementation Rules)
+
+- **Literal Migration**: 새로운 화면을 만들 때 `stitch_ref`의 HTML 구조와 클래스명을 원형 보존하며 React로 옮깁니다. `Pixel Overlap` 검증을 통과하는 범위 내에서 컴포넌트 단위로 분리합니다.
+- **Verbatim Module Syntax**: 모든 타입 임포트는 반드시 `import type`을 사용합니다.
+- **Role-Based Routing**:
+
+  - `/`: 사용자(회중) 화면
+  - `/admin`: 관리자(LCC) 화면
+  - `/login`, `/register`: 인증 화면
+
+## 6. 백엔드 연동 (API & Mocking)
+
+- **Mock-First**: 백엔드 개발 전 API 명세(`api-docs.yaml`)를 기준으로 Mock 데이터를 먼저 생성합니다.
+- **Mock Data Storage**: `web/src/test/mock/`에 API 경로명과 일치하는 JSON 파일로 저장합니다.
+- **Mock Integration**: `TanStack Query`가 개발 단계에서 해당 Mock JSON을 참조하도록 설정합니다.
+- **Go Backend**: `backGo/cmd/api/main.go` (Gin Gonic, 8080 포트)와 Vite 프록시(`/api`)를 사용합니다.
+
+## 7. 스킬 조합 파이프라인 (Skill Combination Pipeline)
+
+개발 시 작업 목적에 맞춰 아래 스킬셋을 조합하여 적용합니다:
+
+1. **실전 구현 조합 (Action-Focused)**: `dbs-goal` + `clean-code` + `golang-pro`. 목표 명확화, 구조 설계, 성능 구현.
+2. **UI/UX 완벽주의 조합 (Parity-Focused)**: `stitch-loop` + `vercel-react-best-practices`. 픽셀 단위 검증 및 웹 성능 최적화.
+3. **기술 부채 제로 조합 (Audit-Focused)**: `mysql` + `to-issues` + `golang-pro (Testing)`. DB/쿼리 최적화, 작업 분해, 테스트 커버리지 80% 달성.
+
+---
+*Generated by Gemini CLI - Stitch Intelligent Interface Protocol.*

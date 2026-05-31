@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Noto+Sans:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<title>내 서재 - KH Library</title>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#091d2e",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#00210c",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#f8f9fa",
+                    "secondary-fixed": "#cce5ff",
+                    "inverse-surface": "#2e3132",
+                    "surface": "#f8f9fa",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#96a9be",
+                    "secondary-container": "#77c2ff",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#7efba4",
+                    "tertiary-container": "#004721",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#d9dadb",
+                    "on-primary-fixed-variant": "#36485b",
+                    "tertiary": "#002e14",
+                    "on-tertiary-container": "#3cbe6e",
+                    "on-secondary-fixed-variant": "#004b73",
+                    "primary-fixed-dim": "#b5c8df",
+                    "inverse-primary": "#b5c8df",
+                    "primary-fixed": "#d1e4fb",
+                    "surface-container": "#edeeef",
+                    "background": "#f8f9fa",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#92ccff",
+                    "tertiary-fixed-dim": "#61de8a",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#191c1d",
+                    "on-primary": "#ffffff",
+                    "outline": "#74777d",
+                    "primary": "#162839",
+                    "surface-tint": "#4e6073",
+                    "on-background": "#191c1d",
+                    "secondary": "#006497",
+                    "surface-variant": "#e1e3e4",
+                    "on-tertiary-fixed-variant": "#005228",
+                    "surface-container-low": "#f3f4f5",
+                    "inverse-on-surface": "#f0f1f2",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-surface-variant": "#43474c",
+                    "on-secondary-fixed": "#001e31",
+                    "primary-container": "#2c3e50",
+                    "surface-container-high": "#e7e8e9",
+                    "on-secondary-container": "#004f79",
+                    "outline-variant": "#c4c6cd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "container-max": "1200px",
+                    "base": "4px",
+                    "sm": "8px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "xl": "40px"
+            },
+            "fontFamily": {
+                    "headline-sm": ["Hanken Grotesk"],
+                    "body-sm": ["Noto Sans"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "body-lg": ["Noto Sans"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-md": ["Noto Sans"],
+                    "label-md": ["Noto Sans"]
+            },
+            "fontSize": {
+                    "headline-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-sm": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .active-nav-link {
+            position: relative;
+        }
+        .active-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #162839;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<div class="flex min-h-screen">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden lg:flex flex-col h-screen sticky top-0 bg-surface-container-low w-64 p-md gap-sm border-r border-outline-variant">
+<div class="flex items-center gap-sm mb-lg px-xs">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-primary">Kingdom Hall</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Inventory System</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-xs">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-full opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-label-md text-label-md">Admin</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<button class="mt-auto flex items-center justify-center gap-sm bg-primary text-on-primary py-sm rounded-full font-label-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span>Scan QR</span>
+</button>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-md h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary">KH Library</span>
+<nav class="hidden md:flex items-center gap-md">
+<a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Public</a>
+<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1" href="#">My Library</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1" href="#">History</a>
+</nav>
+</div>
+<div class="flex items-center gap-sm">
+<div class="relative hidden sm:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant material-symbols-outlined">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md focus:outline-none focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="보유 물품 검색..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 p-md lg:p-lg max-w-container-max mx-auto w-full">
+<!-- Header Section -->
+<div class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-xs">내 서재</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">회중에서 현재 관리하고 있는 총 124개의 품목을 확인하세요.</p>
+</div>
+<div class="flex gap-sm">
+<button class="flex items-center gap-xs px-md py-sm bg-surface-container-high border border-outline-variant rounded-lg font-label-md text-on-surface hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+<span>필터</span>
+</button>
+<button class="flex items-center gap-xs px-md py-sm bg-primary text-on-primary rounded-lg font-label-md hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>신규 추가</span>
+</button>
+</div>
+</div>
+<!-- Stats Overview (Asymmetric/Bento Style Lite) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md mb-xl">
+<div class="md:col-span-1 bg-primary text-on-primary p-md rounded-xl flex flex-col justify-between min-h-[120px] transition-transform hover:scale-[1.02]">
+<span class="font-label-md text-label-md opacity-80">전체 보유 수량</span>
+<span class="font-headline-lg text-headline-lg">1,482</span>
+<div class="flex items-center gap-xs text-tertiary-fixed font-label-md">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>지난달 대비 4% 증가</span>
+</div>
+</div>
+<div class="md:col-span-1 bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex flex-col justify-between min-h-[120px] transition-all hover:shadow-md">
+<span class="font-label-md text-label-md text-on-surface-variant">재고 부족 (5개 이하)</span>
+<span class="font-headline-lg text-headline-lg text-error">12</span>
+<span class="font-label-md text-label-md text-on-surface-variant underline cursor-pointer">품목 확인하기</span>
+</div>
+<div class="md:col-span-2 bg-secondary-container text-on-secondary-container p-md rounded-xl flex items-center justify-between min-h-[120px]">
+<div>
+<span class="font-label-md text-label-md opacity-80">최근 대여중인 항목</span>
+<h3 class="font-headline-sm text-headline-sm mt-1">외국어 성경 (베트남어)</h3>
+<p class="font-body-sm text-body-sm">총 15권 중 12권 대출 중</p>
+</div>
+<span class="material-symbols-outlined text-6xl opacity-20">import_contacts</span>
+</div>
+</div>
+<!-- Category Tabs -->
+<div class="flex gap-sm mb-md overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-md py-sm bg-primary text-on-primary rounded-full font-label-md whitespace-nowrap">전체</button>
+<button class="px-md py-sm bg-surface-variant text-on-surface-variant rounded-full font-label-md whitespace-nowrap hover:bg-outline-variant transition-colors">성경</button>
+<button class="px-md py-sm bg-surface-variant text-on-surface-variant rounded-full font-label-md whitespace-nowrap hover:bg-outline-variant transition-colors">서적</button>
+<button class="px-md py-sm bg-surface-variant text-on-surface-variant rounded-full font-label-md whitespace-nowrap hover:bg-outline-variant transition-colors">팜플렛</button>
+<button class="px-md py-sm bg-surface-variant text-on-surface-variant rounded-full font-label-md whitespace-nowrap hover:bg-outline-variant transition-colors">잡지</button>
+<button class="px-md py-sm bg-surface-variant text-on-surface-variant rounded-full font-label-md whitespace-nowrap hover:bg-outline-variant transition-colors">기타 물품</button>
+</div>
+<!-- Grid Layout for Items -->
+<div class="bento-grid">
+<!-- Item Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-xl transition-all group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Book cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A close-up photographic shot of a premium silver-edged holy book on a dark oak wooden surface. The lighting is soft and directional, creating a respectful and serene atmosphere. The background is a blurred library with warm amber tones. The overall aesthetic is professional, clean, and high-quality, aligning with a modern digital library system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTeqiKYbCrvHBQ9j5_OUHpTyCLn1uY40-8XJKQRJDNCnG6OdJ1Q_IiXpbW6Ubpiuj-waqlTipTfvc_gGcHnq6TkZRL1tKie5nqjyNStF-xFm-8PTNm0SJjpdoIozhPv6T1ko9EMfEzqZjfNU_1XVA49czja9UFChQiaTqmF5XCIipSUDwv9_TQIAgvW8QGC5dJKLB6hK6G7MfR3bYFndTVFxS2jyPtmLw5Wr8LxhCbKQiOlgoen1h2kLGCdWJeCgKzetaOWLPGeVQ"/>
+<div class="absolute top-2 right-2 flex flex-col gap-1">
+<span class="bg-primary text-on-primary px-2 py-1 rounded font-label-md shadow-lg">보유 42</span>
+<span class="bg-tertiary-container text-on-tertiary-container px-2 py-1 rounded font-label-md shadow-lg">신규</span>
+</div>
+</div>
+<div class="p-md">
+<span class="font-label-md text-label-md text-secondary uppercase">성경</span>
+<h3 class="font-headline-sm text-headline-sm text-primary mt-1 truncate">신세계역 성경 (2013년 개정판)</h3>
+<div class="mt-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">가용 상태</span>
+<span class="font-body-md text-body-md text-on-tertiary-container font-semibold">대출 가능</span>
+</div>
+<div class="flex gap-xs">
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Item Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-xl transition-all group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Book cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, studio-lit shot of a stack of educational brochures with vibrant blue and white covers. The composition is minimalist, with sharp focus on the typography of the top brochure. The background is a neutral light grey, maintaining a high-density, professional look consistent with an information-centric UI design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuComIQ1KwWygufDY_SkM37xjVyYen906qMNSluglsUne5FgubDznwpi0tBSL0zlZSy5EwpKzR9I7kjjpGGHaRNjYiXLYKaKAlIm2eczrRKO098FTPFKH2B2chGeJT26RvjTvZ6gY6gkKkw3Q0yTGU3IibpUSGi5ENaYqq40Uais4Ac9aacmLXEHgr7zH6O8qtNcoIBEpdOAG7lHQ8YtHY982gVWenKzSVjlC1gcZxOfcxshgi1O3yZrY2rQjDixe9l3ub0JTaXczvo"/>
+<div class="absolute top-2 right-2 flex flex-col gap-1">
+<span class="bg-error text-on-error px-2 py-1 rounded font-label-md shadow-lg">보유 3</span>
+</div>
+</div>
+<div class="p-md">
+<span class="font-label-md text-label-md text-secondary uppercase">서적</span>
+<h3 class="font-headline-sm text-headline-sm text-primary mt-1 truncate">행복한 삶을 영원히 누리십시오!</h3>
+<div class="mt-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">가용 상태</span>
+<span class="font-body-md text-body-md text-error font-semibold">재고 부족</span>
+</div>
+<div class="flex gap-xs">
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Item Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-xl transition-all group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Magazine" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A bright, airy photo of several colorful magazines neatly arranged on a modern white bookshelf. The lighting is natural and diffuse, highlighting the crisp paper texture and sharp print quality. The palette includes soft pastels and deep blues, reflecting a calm yet organized management system for a congregation library." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgMvT8mvCEpC2bGW5-FHWmUer4XWEtnUepDZsCfGY8kwg13KdKXaPLgw83-ej8BLUjnVfkUoVglnqbb8HiYz773jxLLpN5au8DQv9x4LXzSjlXatbzeCPTa0frvTvArOEYfAoH0Nw4erkybqJhfbMGNf-iD1JP8gRih8oovjvZyyLhzRE56dBkDIqHAuVW-IM7p8fLsP6105TjKurSrvTTjNFqFfKFeE8xk4HbGtnCLhvKhJGQOrhYgDptC5bK4FeiK8J2qjbAR-s"/>
+<div class="absolute top-2 right-2 flex flex-col gap-1">
+<span class="bg-primary text-on-primary px-2 py-1 rounded font-label-md shadow-lg">보유 150</span>
+</div>
+</div>
+<div class="p-md">
+<span class="font-label-md text-label-md text-secondary uppercase">잡지</span>
+<h3 class="font-headline-sm text-headline-sm text-primary mt-1 truncate">파수대 (No. 1 2024)</h3>
+<div class="mt-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">가용 상태</span>
+<span class="font-body-md text-body-md text-on-tertiary-container font-semibold">대출 가능</span>
+</div>
+<div class="flex gap-xs">
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Item Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-xl transition-all group">
+<div class="aspect-[3/4] relative overflow-hidden bg-surface-container">
+<img alt="Pamphlet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A macro shot of professional pamphlets with clear typography and minimalist design elements. The focus is sharp on the title text, while the rest of the pamphlet falls into a gentle bokeh. The environment is a clean, modern office with cool-toned lighting, conveying a sense of order and high-density information management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqSGModDTHMXENkWYyX1HakgnpfVhNpj4KeY2wcHgr1LhFUK7vTaFu9xXQeTmZiZGVWnl_IcpYohk9PIIfXMnHaw40LVy-1b7QxBbHgehZsPH8VTxAluYOKeWv-mMSfYk8jlPRTKN_lDhK1BicRVGYMWK6BiBgNVKGo4lDXddn9dFlEIfTUUkRc9zHNTEKQYJu9Kc2NPjpjXNN9MdcdLJ8QryAH7y6YcC91fFvcooGpi9HkLRwkMj7E2TrMRcfRY_H5A8fkUnOomQ"/>
+<div class="absolute top-2 right-2 flex flex-col gap-1">
+<span class="bg-primary text-on-primary px-2 py-1 rounded font-label-md shadow-lg">보유 85</span>
+</div>
+</div>
+<div class="p-md">
+<span class="font-label-md text-label-md text-secondary uppercase">팜플렛</span>
+<h3 class="font-headline-sm text-headline-sm text-primary mt-1 truncate">성경—우리에게 주는 소식은?</h3>
+<div class="mt-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">가용 상태</span>
+<span class="font-body-md text-body-md text-on-tertiary-container font-semibold">대출 가능</span>
+</div>
+<div class="flex gap-xs">
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination / More -->
+<div class="mt-xl flex items-center justify-center gap-md">
+<button class="px-md py-sm border border-outline-variant rounded-full font-label-md text-on-surface-variant hover:bg-surface-container transition-colors disabled:opacity-50" disabled="">이전</button>
+<div class="flex gap-sm">
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-on-primary rounded-full font-label-md">1</button>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:bg-surface-container rounded-full font-label-md">2</button>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:bg-surface-container rounded-full font-label-md">3</button>
+</div>
+<button class="px-md py-sm border border-outline-variant rounded-full font-label-md text-on-surface-variant hover:bg-surface-container transition-colors">다음</button>
+</div>
+</div>
+<!-- Spacer for BottomNavBar Mobile -->
+<div class="h-20 lg:hidden"></div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm py-xs bg-surface border-t border-outline-variant shadow-sm rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined">local_library</span>
+<span class="font-label-md text-label-md-mobile">Public</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">inventory</span>
+<span class="font-label-md text-label-md-mobile">My Items</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined">qr_code_2</span>
+<span class="font-label-md text-label-md-mobile">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md-mobile">History</span>
+</a>
+</nav>
+</div>
+<script>
+        // Micro-interaction: Active state scaling for buttons
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.classList.add('scale-95');
+            });
+            el.addEventListener('mouseup', () => {
+                el.classList.remove('scale-95');
+            });
+            el.addEventListener('mouseleave', () => {
+                el.classList.remove('scale-95');
+            });
+        });
+        
+        // Sticky Header scroll effect
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 0) {
+                header.classList.add('shadow-sm');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

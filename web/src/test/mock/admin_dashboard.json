@@ -1,0 +1,11 @@
+{
+  "stats": {
+    "totalUsers": 124,
+    "activeTransactions": 15,
+    "pendingApprovals": 3
+  },
+  "recentActivity": [
+    { "id": 1, "action": "Inventory Update", "user": "Admin User", "time": "2026-05-31 10:00" },
+    { "id": 2, "action": "New User Registered", "user": "User 123", "time": "2026-05-31 09:30" }
+  ]
+}
