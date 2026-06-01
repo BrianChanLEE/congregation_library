@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense } from 'react';
 import { InstallPrompt } from './components/common/InstallPrompt';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
@@ -8,6 +8,7 @@ import { DashboardLayout } from './components/layouts/DashboardLayout';
 import { LoginScreen } from './screens/LoginScreen';
 import { PublicLibraryScreen } from './screens/PublicLibraryScreen';
 import { MyLibraryScreen } from './screens/MyLibraryScreen';
+import { MyLibraryScreen_1 } from './screens/MyLibraryScreen_1';
 import { MovementHistoryScreen } from './screens/MovementHistoryScreen';
 import { AdminDashboard } from './screens/AdminDashboard';
 import { QrScanScreen } from './screens/QrScanScreen';
@@ -15,7 +16,7 @@ import { QrScanScreen } from './screens/QrScanScreen';
 function App() {
   return (
     <>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <HashRouter basename={'/'}>
         <Suspense fallback={<div className="flex h-screen items-center justify-center">로딩 중...</div>}>
           <Routes>
             <Route path="/login" element={<LoginScreen />} />
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/" element={<PublicLibraryScreen />} />
                 <Route path="/catalog" element={<PublicLibraryScreen />} />
                 <Route path="/my-library" element={<MyLibraryScreen />} />
+                <Route path="/my-library-v1" element={<MyLibraryScreen_1 />} />
                 <Route path="/history" element={<MovementHistoryScreen />} />
                 <Route path="/scan" element={<QrScanScreen />} />
                 
@@ -39,7 +41,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
-      </BrowserRouter>
+      </HashRouter>
       <InstallPrompt />
     </>
   );

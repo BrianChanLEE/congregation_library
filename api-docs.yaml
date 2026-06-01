@@ -4,6 +4,20 @@ info:
   version: 1.0.0
   description: 서적 관리 프로젝트의 백엔드 API 명세서입니다.
 
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    Unauthorized:
+      description: 인증 토큰 누락 또는 만료
+    Forbidden:
+      description: 권한 부족
+    ServerError:
+      description: 서버 오류
+
 paths:
   /api/auth/register:
     post:
@@ -78,6 +92,8 @@ paths:
   /api/admin/items:
     post:
       summary: 품목 추가
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -89,8 +105,12 @@ paths:
                 code: {type: string}
       responses:
         '201': {description: 추가 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
     get:
       summary: 전체 품목 목록 조회
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: 성공
@@ -104,9 +124,13 @@ paths:
                     id: {type: integer}
                     name: {type: string}
                     code: {type: string}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
   /api/admin/items/{id}:
     put:
       summary: 품목 수정
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -123,8 +147,12 @@ paths:
                 code: {type: string}
       responses:
         '200': {description: 수정 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
     delete:
       summary: 품목 삭제 (Soft Delete)
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -132,10 +160,14 @@ paths:
           schema: {type: integer}
       responses:
         '200': {description: 삭제 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
 
   /api/transactions:
     post:
       summary: 입고/출고 거래 생성
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -151,10 +183,13 @@ paths:
                 memo: {type: string}
       responses:
         '201': {description: 거래 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}
 
   /api/history:
     get:
       summary: 전체 활동 내역 조회 (타임라인용)
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: 성공
@@ -173,10 +208,13 @@ paths:
                     type: {type: string}
                     method: {type: string}
                     memo: {type: string}
+        '401': {$ref: '#/components/responses/Unauthorized'}
 
   /api/admin/stats:
     get:
       summary: 어드민 대시보드 통계 조회
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: 성공
@@ -188,10 +226,14 @@ paths:
                   total_items: {type: integer}
                   recent_activity_count: {type: integer}
                   pending_user_count: {type: integer}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
 
   /api/admin/users/pending:
     get:
       summary: 가입 대기 사용자 목록 조회
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: 성공
@@ -206,9 +248,13 @@ paths:
                     name: {type: string}
                     jwhub_email: {type: string}
                     status: {type: string}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
   /api/admin/users/{id}/status:
     put:
       summary: 사용자 승인 상태 변경
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -224,9 +270,13 @@ paths:
                 status: {type: string, enum: [APPROVED, REJECTED]}
       responses:
         '200': {description: 상태 변경 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
   /api/admin/users/{id}:
     delete:
       summary: 사용자 삭제 (Soft Delete)
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -234,10 +284,14 @@ paths:
           schema: {type: integer}
       responses:
         '200': {description: 삭제 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
 
   /api/admin/announcements:
     get:
       summary: 공지사항 목록 조회
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: 성공
@@ -253,8 +307,12 @@ paths:
                     content: {type: string}
                     author_id: {type: integer}
                     created_at: {type: string}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
     post:
       summary: 공지사항 등록
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -267,9 +325,13 @@ paths:
                 author_id: {type: integer}
       responses:
         '201': {description: 등록 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
   /api/admin/announcements/{id}:
     put:
       summary: 공지사항 수정
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -286,8 +348,12 @@ paths:
                 content: {type: string}
       responses:
         '200': {description: 수정 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
     delete:
       summary: 공지사항 삭제
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -295,10 +361,14 @@ paths:
           schema: {type: integer}
       responses:
         '200': {description: 삭제 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
 
   /api/admin/system-status:
     get:
       summary: 시스템 상태 모니터링 (에러 로그 요약 등)
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: 성공
@@ -317,10 +387,14 @@ paths:
                         error: {type: string}
                         time: {type: string}
                   system_time: {type: string}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
 
   /api/user/profile:
     get:
       summary: 사용자 프로필 조회
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: 성공
@@ -333,9 +407,12 @@ paths:
                   name: {type: string}
                   role: {type: string}
                   jwhub_email: {type: string}
+        '401': {$ref: '#/components/responses/Unauthorized'}
   /api/user/password:
     put:
       summary: 비밀번호 변경
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -347,3 +424,4 @@ paths:
                 new_password: {type: string}
       responses:
         '200': {description: 변경 성공}
+        '401': {$ref: '#/components/responses/Unauthorized'}

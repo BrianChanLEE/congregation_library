@@ -13,8 +13,14 @@ func (h *ItemHandler) GetInventory(c *gin.Context) {
 	congIDStr := c.Query("cong_id")
 	itemIDStr := c.Query("item_id")
 
-	congID, _ := strconv.ParseInt(congIDStr, 10, 64)
-	itemID, _ := strconv.ParseInt(itemIDStr, 10, 64)
+	congID, err1 := strconv.ParseInt(congIDStr, 10, 64)
+	itemID, err2 := strconv.ParseInt(itemIDStr, 10, 64)
+
+	if err1 != nil || err2 != nil {
+		logger.Log.Warn("재고 조회 파라미터 오류", "cong_id", congIDStr, "item_id", itemIDStr)
+		response.SendError(c, http.StatusBadRequest, "INVALID_INPUT", "유효한 cong_id와 item_id가 필요합니다.", "")
+		return
+	}
 
 	inventory, err := h.ItemService.GetInventory(congID, itemID)
 	if err != nil {

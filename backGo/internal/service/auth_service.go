@@ -1,6 +1,7 @@
 package service
 
 import (
+	"boock/backGo/internal/logger"
 	"boock/backGo/internal/models"
 	"boock/backGo/internal/repository"
 	"errors"
@@ -52,11 +53,13 @@ func (s *AuthService) Login(congCode, email, password string) (string, error) {
 	// 2. 이메일과 회중 ID로 사용자 조회
 	user, err := s.userRepo.GetByJwhubEmailAndCongID(email, congID)
 	if err != nil {
+		logger.Log.Warn("로그인: 사용자 조회 실패", "email", email, "congID", congID, "err", err)
 		return "", errors.New("인증 실패: 사용자를 찾을 수 없습니다.")
 	}
 
 	// 3. 비밀번호 검증
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)); err != nil {
+		logger.Log.Warn("로그인: 비밀번호 불일치", "email", email)
 		return "", errors.New("인증 실패: 비밀번호가 일치하지 않습니다.")
 	}
 

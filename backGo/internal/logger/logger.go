@@ -22,10 +22,10 @@ func (w *GinWriter) Write(p []byte) (n int, err error) {
 }
 
 // Log는 프로젝트 전역에서 사용할 구조화된 로거입니다.
-var Log *slog.Logger
+var Log = slog.Default()
 
 // GinLog는 GIN 전용 단순 로거입니다.
-var GinLog *slog.Logger
+var GinLog = slog.Default()
 
 // Init은 로거를 초기화합니다.
 func Init() {

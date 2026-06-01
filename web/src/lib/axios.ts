@@ -22,7 +22,7 @@ apiClient.interceptors.response.use(
     if (err?.response?.status === 401) {
       useAuthStore.getState().logout();
       if (typeof window !== 'undefined') {
-        window.location.assign('/login');
+        window.location.hash = '/login';
       }
     }
     return Promise.reject(err);

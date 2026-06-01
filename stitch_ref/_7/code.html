@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Noto+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#61de8a",
+                        "surface": "#f8f9fa",
+                        "on-secondary-fixed": "#001e31",
+                        "primary-container": "#2c3e50",
+                        "surface-container": "#edeeef",
+                        "on-primary-fixed": "#091d2e",
+                        "background": "#f8f9fa",
+                        "secondary-container": "#77c2ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "primary": "#162839",
+                        "tertiary-container": "#004721",
+                        "primary-fixed-dim": "#b5c8df",
+                        "surface-dim": "#d9dadb",
+                        "outline-variant": "#c4c6cd",
+                        "tertiary": "#002e14",
+                        "inverse-primary": "#b5c8df",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#00210c",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary": "#006497",
+                        "secondary-fixed-dim": "#92ccff",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e1e3e4",
+                        "outline": "#74777d",
+                        "secondary-fixed": "#cce5ff",
+                        "on-primary-container": "#96a9be",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-low": "#f3f4f5",
+                        "primary-fixed": "#d1e4fb",
+                        "on-tertiary-container": "#3cbe6e",
+                        "on-surface-variant": "#43474c",
+                        "on-secondary-fixed-variant": "#004b73",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#7efba4",
+                        "surface-bright": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "on-secondary-container": "#004f79",
+                        "on-background": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#36485b",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-tint": "#4e6073",
+                        "surface-container-high": "#e7e8e9",
+                        "on-tertiary-fixed-variant": "#005228"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Noto Sans"],
+                        "body-md": ["Noto Sans"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "label-md": ["Noto Sans"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Noto Sans"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .carousel-scene {
+            perspective: 1400px;
+            perspective-origin: 50% 35%;
+            width: 100%;
+            height: 550px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+        }
+        .camera-tilt {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            transform: rotateX(12deg) translateY(20px);
+            transition: transform 0.5s ease;
+        }
+        .carousel-ring {
+            width: 320px;
+            height: 440px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .carousel-card {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 320px;
+            height: 440px;
+            backface-visibility: visible;
+            transition: opacity 0.5s ease, filter 0.5s ease;
+            transform-style: preserve-3d;
+        }
+        .floor-plane {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            width: 1200px;
+            height: 1200px;
+            transform: translate(-50%, 50%) rotateX(70deg);
+            background: radial-gradient(circle at center, rgba(44, 62, 80, 0.08) 0%, rgba(44, 62, 80, 0.03) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .floor-shadow {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            width: 450px;
+            height: 40px;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse at center, rgba(22, 40, 57, 0.15) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(12px);
+            pointer-events: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glass-header {
+            background: rgba(248, 249, 250, 0.85);
+            backdrop-filter: blur(10px);
+        }
+        .item-glow {
+            box-shadow: 0 10px 30px rgba(22, 40, 57, 0.08);
+        }
+        .active-card-glow {
+            box-shadow: 0 20px 60px rgba(22, 40, 57, 0.2);
+        }
+        .carousel-bg-atmospheric {
+            background: linear-gradient(180deg, #f8f9fa 0%, #edeeef 100%);
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md">
+<div id="app">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-md h-16 max-w-container-max mx-auto bg-surface border-b border-outline-variant glass-header">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-primary">KH Library</span>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Public</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md" href="#">My Library</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md" href="#">History</a>
+</nav>
+<div class="flex items-center gap-sm">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-1.5 rounded-full border border-outline-variant bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-primary/20 text-body-md w-64" placeholder="도서 검색..." type="text"/>
+</div>
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant">qr_code_scanner</button>
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant">account_circle</button>
+</div>
+</header>
+<main class="flex-1 w-full max-w-container-max mx-auto px-md py-lg overflow-x-hidden">
+<!-- Category Filters -->
+<section class="mb-lg">
+<div class="flex items-center gap-sm overflow-x-auto hide-scrollbar pb-2">
+<button class="px-lg py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md whitespace-nowrap">전체</button>
+<button class="px-lg py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all font-label-md text-label-md whitespace-nowrap">성경</button>
+<button class="px-lg py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all font-label-md text-label-md whitespace-nowrap">봉사 도구</button>
+<button class="px-lg py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all font-label-md text-label-md whitespace-nowrap">서적</button>
+<button class="px-lg py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all font-label-md text-label-md whitespace-nowrap">잡지</button>
+<button class="px-lg py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all font-label-md text-label-md whitespace-nowrap">전도지</button>
+</div>
+</section>
+<!-- 3D Circular Carousel Section -->
+<section class="mb-xl relative carousel-bg-atmospheric rounded-xl py-xl px-md overflow-hidden">
+<h2 class="font-headline-lg text-headline-lg mb-xl relative z-10">주요 자료</h2>
+<div @mousedown="startDrag" @mouseleave="endDrag" @mousemove="onDrag" @mouseup="endDrag" @touchend="endDrag" @touchmove="onDrag" @touchstart="startDrag" class="carousel-scene">
+<div class="camera-tilt">
+<div :style="{ transform: `rotateY(${rotation}deg)` }" class="carousel-ring">
+<div :class="{ 'active-card-glow': isActive(index) }" :key="index" :style="getCardStyle(index)" class="carousel-card flex flex-col bg-white rounded-xl overflow-hidden cursor-pointer item-glow" v-for="(item, index) in carouselItems">
+<div class="flex-1 relative bg-surface-container-low overflow-hidden">
+<img :alt="item.title" :src="item.image" class="w-full h-full object-cover"/>
+<div :class="item.statusColor" class="absolute top-4 right-4 px-3 py-1 rounded-full text-label-md flex items-center gap-1 shadow-sm z-10">
+<span :class="item.dotColor" class="w-2 h-2 rounded-full"></span> {{ item.statusText }}
+                                    </div>
+</div>
+<div class="p-lg bg-white border-t border-outline-variant/20">
+<span class="text-on-surface-variant font-label-md text-label-md">{{ item.category }}</span>
+<h3 class="font-headline-sm text-headline-sm text-primary mt-1">{{ item.title }}</h3>
+</div>
+</div>
+</div>
+<!-- Floor Plane for reflections/spatial ground -->
+<div class="floor-plane"></div>
+</div>
+<!-- Floor Shadow -->
+<div class="floor-shadow"></div>
+<!-- Navigation Buttons -->
+<div class="absolute top-1/2 -translate-y-1/2 w-full flex justify-between pointer-events-none px-4 z-40">
+<button @click="rotateBy(1)" class="w-12 h-12 rounded-full bg-white/90 backdrop-blur shadow-lg flex items-center justify-center border border-outline-variant pointer-events-auto hover:bg-surface-container transition-all active:scale-90 text-primary">
+<span class="material-symbols-outlined text-2xl">chevron_left</span>
+</button>
+<button @click="rotateBy(-1)" class="w-12 h-12 rounded-full bg-white/90 backdrop-blur shadow-lg flex items-center justify-center border border-outline-variant pointer-events-auto hover:bg-surface-container transition-all active:scale-90 text-primary">
+<span class="material-symbols-outlined text-2xl">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Page Indicators -->
+<div class="flex justify-center gap-2 mt-8 relative z-10">
+<div :class="isActive(index) ? 'bg-primary w-6' : 'bg-outline-variant w-2.5'" :key="'dot-'+index" class="h-2.5 rounded-full transition-all duration-300" v-for="(item, index) in carouselItems">
+</div>
+</div>
+</section>
+<!-- Secondary Grid Section -->
+<section class="mt-xl">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">최근 추가된 항목</h2>
+<p class="text-on-surface-variant font-body-sm text-body-sm">이번 주에 새롭게 입고된 자료들입니다.</p>
+</div>
+<button class="flex items-center gap-1 text-secondary font-label-md text-label-md group">
+                        모두 보기 <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Item 1 -->
+<div class="flex gap-md p-md bg-white rounded-lg border border-outline-variant hover:shadow-md transition-shadow cursor-pointer">
+<div class="w-16 h-20 bg-surface-container rounded overflow-hidden flex-shrink-0">
+<img alt="Item" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxShB6zj6javSRH3hqVMjbfo2GbEMqvKOXz1fjYz6TkfJ-ptAzUkH-6k9QWcFbBKjh7dc5lXglx3w87er-E3bwpYAcpCJTNPXebBzlL4t27kEO3tAGSKYAZt2F5U8pvDQtoDEIo70hWTjAyqH7hxx0ltBNJRLd8NBvHLzF-PO97y5wDTrzH9YLv-ZR0d7vlUXDozMinVGOFsIZBTyluczbkLfjQez8NOHqV3cbLoo8reaJpstbBpn-dznYhqXv7eEnv-HyA5gYXXg"/>
+</div>
+<div class="flex flex-col justify-between">
+<div>
+<h4 class="font-label-md text-label-md text-primary line-clamp-1">집회 교재 2024년 11월</h4>
+<span class="text-on-surface-variant text-[11px] font-medium">정기 간행물</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] font-semibold text-tertiary">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check_circle</span> 82권 남음
+                            </div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-md p-md bg-white rounded-lg border border-outline-variant hover:shadow-md transition-shadow cursor-pointer">
+<div class="w-16 h-20 bg-surface-container rounded overflow-hidden flex-shrink-0">
+<img alt="Item" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx9d9u4NFgpQ5LP7XF6wkJmZFTKY8wYIUo7_6veSezHs3Z9j73i1bHH-G_QC8FLGLQs-nXen77O4SMauxaM0hEImFoObOr6rwuT-9qrmZv4UYnjj0jEikpU4wSQ_HkUrNhSXzLlu_Z-P2WqJmrzp1V8MFE1cjSIhuGEHwG9odmku-71JKNecU5i14SGEThremcqANNynAqx41e4CPC26HaecVDCLqUuaJ8ghPkLHZmERue7pggPvhvxhVsRG7VkBmRZo8wRfXW-v4"/>
+</div>
+<div class="flex flex-col justify-between">
+<div>
+<h4 class="font-label-md text-label-md text-primary line-clamp-1">생활과 봉사 대회 프로그램</h4>
+<span class="text-on-surface-variant text-[11px] font-medium">대회 자료</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] font-semibold text-secondary">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">warning</span> 5권 남음
+                            </div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex gap-md p-md bg-white rounded-lg border border-outline-variant hover:shadow-md transition-shadow cursor-pointer">
+<div class="w-16 h-20 bg-surface-container rounded overflow-hidden flex-shrink-0">
+<img alt="Item" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT-OxFNCp2UIKRhV2UDa0C8zyLi-mtjdD4fvh8KWUNNcVW-9PdqeXov8TmLNTUYGfU2XUxddW2U8CRr5PAyMelPiQE4ZfAGD-PTD0tn85UrqeDFbOkH0muduBmtN8a18LrH7QHVxVpU8T_Ay6N3RUx-Ifn_kAobokLObZUpglXRehkmUbo4w2ip9xlkVPjC8UvFqBdzGeLW_kfS6E-iDPB3Tj2SubL07RlmZICdp_cDFsmkVnPE_KKxz4MdjAjZj2VsD0yzmSt5V4"/>
+</div>
+<div class="flex flex-col justify-between">
+<div>
+<h4 class="font-label-md text-label-md text-primary line-clamp-1">성경을 조사해 보아야 하는 이유</h4>
+<span class="text-on-surface-variant text-[11px] font-medium">전도지</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] font-semibold text-tertiary">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check_circle</span> 충분
+                            </div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="flex gap-md p-md bg-white rounded-lg border border-outline-variant hover:shadow-md transition-shadow cursor-pointer">
+<div class="w-16 h-20 bg-surface-container rounded overflow-hidden flex-shrink-0">
+<img alt="Item" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsIOC3utnh58AFSmiWtveXtI5pxrp24JSA1dmrlTq3z8gXZbmP8wV4hQJSeGJzwZEMw2k3UBwi0l_Ia1sDGcFEMZao47coL31ZlbcFvVSR2-2Y7lKC-zqzXJ47kv4YkDnIGjqH64MqB5AtAx4X17LqeHP7yk4yK11vLO7rALpKA2Cxs-4Iai5QBJImEvKMnE1qHygKQ8DLY68EKcVKXb_Ciw7kQmU7PRBkqg8exgqwbYM5zXIjVj2NjVfcb8khkhI-6m9KFJPTAdI"/>
+</div>
+<div class="flex flex-col justify-between">
+<div>
+<h4 class="font-label-md text-label-md text-primary line-clamp-1">기념식 초대장</h4>
+<span class="text-on-surface-variant text-[11px] font-medium">초대장</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] font-semibold text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">cancel</span> 품절
+                            </div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm py-xs bg-surface border-t border-outline-variant shadow-sm">
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined">local_library</span>
+<span class="font-label-md text-[10px] leading-tight">Public</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">inventory</span>
+<span class="font-label-md text-[10px] leading-tight">My Items</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<div class="p-2 bg-primary rounded-full text-white -mt-8 shadow-lg scale-110">
+<span class="material-symbols-outlined">qr_code_2</span>
+</div>
+<span class="font-label-md text-[10px] leading-tight mt-1">Scan</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-[10px] leading-tight">History</span>
+</button>
+</nav>
+</div>
+<script>
+        const { createApp, ref, computed, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                const rotation = ref(0);
+                const isDragging = ref(false);
+                const startX = ref(0);
+                const currentX = ref(0);
+                
+                const carouselItems = ref([
+                    {
+                        title: "성경 - 신세계역",
+                        category: "성경",
+                        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCskOWnIoaig3i02CEX_FBfs4Sp1xpMtBDravp54r2Zb0LVZySEkf5MQkU8MeJAcNrdivisgXSzM_QJcQiGwSC5CrEVUtyWrRwOFrmYycn97aoL_uUtjvx0NuSCBovzJ4_YP8LHovpLnPpR8kwODpm5okRo_TagDbAyrUCP_-y8jDOwvTHBoVyboCh_DjMAFxq5bCVAQvGR2O5mnu5duAFFS_i_lp8Mbve5GP_Q4wCz2IIvxZ2zxuUuIpzr7mxX9UEVUpZl10jscHU",
+                        statusText: "여유 있음",
+                        statusColor: "bg-tertiary-fixed text-on-tertiary-fixed",
+                        dotColor: "bg-tertiary-fixed-dim"
+                    },
+                    {
+                        title: "2024년 파수대/깨어라!",
+                        category: "잡지",
+                        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCF4xshB9oy6AhkodW3ZOcdIDq_pNkYGDH-_-y4odPgvoljEB6OgxYCh7SDhle2HVv7wXRXBEE6n_AW0Si4LaKIlxkGJ6JOptKNwOWM5YovcihjzVNh0w-Mfn8UyVY0T4Ux5svp3un6wEQ7R9WbWUTJoX2sVFficsg5e4ODxGXgI0RBE3yloD88IedlPIU2lblsPnZv3_rnVsyMwEUaPI5J20UJZaZQuFUia_9g_WOjsR0bBtJ93AqaL6hUjs6MQvkBc07ArmSN_n8",
+                        statusText: "재고 적음",
+                        statusColor: "bg-secondary-fixed text-on-secondary-fixed",
+                        dotColor: "bg-secondary"
+                    },
+                    {
+                        title: "행복하게 영원히 사십시오!",
+                        category: "봉사 도구",
+                        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAYc_vg3qtSzgOpLG3XpAPqs1zR1X7R2sOZ5z0W817NwT47nAbQQvM_gC-uANlbPTyEy_T_ZCh-OQcrK4Aff6A3dAp5Sg-EIERrQKsysERmhrOaNv1dCueYmZ8Z8A6lAwcq-VScbZWj6V7qoKS6vifsVJl5NnHYWLbYha6-vNeiW4ndmGOknoMFG4oH0qrmkpJsTrOd7C-MeTuXCniI6UwfK4zs3VRW3aqwaB5EZrBMOuUtNfo-RM3FHLVfo-N19ihrDgEnvjUoIo0",
+                        statusText: "재고 없음",
+                        statusColor: "bg-surface-container-highest text-on-surface-variant",
+                        dotColor: "bg-outline"
+                    },
+                    {
+                        title: "성경에서 무엇을 배울 수 있습니까?",
+                        category: "서적",
+                        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCx9d9u4NFgpQ5LP7XF6wkJmZFTKY8wYIUo7_6veSezHs3Z9j73i1bHH-G_QC8FLGLQs-nXen77O4SMauxaM0hEImFoObOr6rwuT-9qrmZv4UYnjj0jEikpU4wSQ_HkUrNhSXzLlu_Z-P2WqJmrzp1V8MFE1cjSIhuGEHwG9odmku-71JKNecU5i14SGEThremcqANNynAqx41e4CPC26HaecVDCLqUuaJ8ghPkLHZmERue7pggPvhvxhVsRG7VkBmRZo8wRfXW-v4",
+                        statusText: "여유 있음",
+                        statusColor: "bg-tertiary-fixed text-on-tertiary-fixed",
+                        dotColor: "bg-tertiary-fixed-dim"
+                    }
+                ]);
+
+                const radius = computed(() => {
+                    // Increased radius for clearer circular structure (approx 420px for desktop)
+                    const isMobile = window.innerWidth < 768;
+                    const baseRadius = isMobile ? 320 : 420;
+                    return baseRadius;
+                });
+
+                const stepAngle = computed(() => 360 / carouselItems.value.length);
+
+                function getCardStyle(index) {
+                    const angle = stepAngle.value * index;
+                    // Opacity and blur logic based on rotation
+                    const cardRotation = (angle + rotation.value) % 360;
+                    const normalizedRotation = (cardRotation + 360) % 360;
+                    
+                    // Frontend logic: item is front if normalizedRotation is near 0 or 360
+                    const diffToFront = Math.min(normalizedRotation, 360 - normalizedRotation);
+                    
+                    // Depth-based opacity: farther cards are more transparent (0.3 to 1.0)
+                    const opacity = Math.max(0.2, 1 - (diffToFront / 180));
+                    const blur = Math.min(6, diffToFront / 25);
+                    const scale = 1 - (diffToFront / 500); // Subtle scale based on distance
+                    
+                    return {
+                        transform: `rotateY(${angle}deg) translateZ(${radius.value}px) scale(${scale})`,
+                        opacity: opacity,
+                        filter: `blur(${blur}px)`
+                    };
+                }
+
+                function isActive(index) {
+                    const angle = stepAngle.value * index;
+                    const currentRingRot = (rotation.value % 360 + 360) % 360;
+                    const targetRingRot = (360 - angle) % 360;
+                    const diff = Math.abs(currentRingRot - targetRingRot);
+                    return diff < 10 || diff > 350;
+                }
+
+                function rotateBy(direction) {
+                    rotation.value += direction * stepAngle.value;
+                }
+
+                function startDrag(e) {
+                    isDragging.value = true;
+                    startX.value = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                    currentX.value = startX.value;
+                }
+
+                function onDrag(e) {
+                    if (!isDragging.value) return;
+                    const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                    const delta = x - currentX.value;
+                    rotation.value += delta * 0.4; // Sensitivity adjusted
+                    currentX.value = x;
+                }
+
+                function endDrag() {
+                    if (!isDragging.value) return;
+                    isDragging.value = false;
+                    // Snap to closest angle
+                    const closest = Math.round(rotation.value / stepAngle.value) * stepAngle.value;
+                    rotation.value = closest;
+                }
+
+                return {
+                    rotation,
+                    carouselItems,
+                    radius,
+                    stepAngle,
+                    getCardStyle,
+                    isActive,
+                    rotateBy,
+                    startDrag,
+                    onDrag,
+                    endDrag
+                };
+            }
+        }).mount('#app');
+    </script>
+</body></html>

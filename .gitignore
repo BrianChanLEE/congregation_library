@@ -15,6 +15,7 @@ dist-ssr
 .env.local
 
 # Build
+.cache/
 *.out
 *.exe
 *.dll
