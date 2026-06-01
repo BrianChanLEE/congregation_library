@@ -31,7 +31,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		tokenString := parts[1]
 		jwtSecret := os.Getenv("JWT_SECRET")
 		if jwtSecret == "" {
-			jwtSecret = "default_secret" // 보안을 위해 .env 설정을 권장
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "JWT_SECRET 환경 변수가 설정되지 않았습니다."})
+			return
 		}
 
 		claims := jwt.MapClaims{}

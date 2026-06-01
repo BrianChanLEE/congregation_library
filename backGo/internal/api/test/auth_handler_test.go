@@ -1,8 +1,8 @@
 package api_test
 
 import (
-	"bytes"
 	"boock/backGo/internal/api"
+	"bytes"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -109,9 +109,9 @@ func TestAuthHandler(t *testing.T) {
 			{
 				name: "성공적인 로그인",
 				input: gin.H{
-					"cong_code":    "123",
-					"jwhub_email":  "test@example.com",
-					"password":     "password123",
+					"cong_code":   "123",
+					"jwhub_email": "test@example.com",
+					"password":    "password123",
 				},
 				mockFn: func(m *MockAuthService) {
 					m.On("Login", "123", "test@example.com", "password123").Return("fake-jwt-token", nil)
@@ -131,9 +131,9 @@ func TestAuthHandler(t *testing.T) {
 			{
 				name: "인증 실패 (잘못된 비밀번호 등)",
 				input: gin.H{
-					"cong_code":    "123",
-					"jwhub_email":  "test@example.com",
-					"password":     "wrong",
+					"cong_code":   "123",
+					"jwhub_email": "test@example.com",
+					"password":    "wrong",
 				},
 				mockFn: func(m *MockAuthService) {
 					m.On("Login", "123", "test@example.com", "wrong").Return("", errors.New("unauthorized"))

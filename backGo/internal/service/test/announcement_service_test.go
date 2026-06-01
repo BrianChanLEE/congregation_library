@@ -1,9 +1,9 @@
 package service_test
 
 import (
-	"boock/backGo/internal/service"
 	"boock/backGo/internal/models"
-	
+	"boock/backGo/internal/service"
+
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -39,6 +39,7 @@ func TestAnnouncementService_GetAllAnnouncements(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 }
+
 // ...
 // TestAnnouncementService_DeleteAnnouncement 테스트 케이스
 func TestAnnouncementService_DeleteAnnouncement(t *testing.T) {
@@ -68,4 +69,3 @@ func TestAnnouncementService_UpdateAnnouncement(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 }
-

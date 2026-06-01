@@ -9,8 +9,8 @@ import (
 type TransactionFunc func(*sql.Tx) error
 
 // WithTransaction은 트랜잭션 시작, 커밋, 롤백을 자동으로 관리합니다.
-func WithTransaction(fn TransactionFunc) error {
-	tx, err := DB.Begin()
+func WithTransaction(db *sql.DB, fn TransactionFunc) error {
+	tx, err := db.Begin()
 	if err != nil {
 		return fmt.Errorf("트랜잭션 시작 실패: %w", err)
 	}

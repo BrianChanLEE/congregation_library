@@ -4,6 +4,7 @@ import (
 	"boock/backGo/internal/api"
 	"boock/backGo/internal/repository"
 	"boock/backGo/internal/service"
+	"database/sql"
 )
 
 type HandlerContainer struct {
@@ -17,25 +18,25 @@ type HandlerContainer struct {
 	User         *api.UserHandler
 }
 
-func InitializeHandlers() *HandlerContainer {
-	activityRepo := &repository.ActivityLogRepository{}
+func InitializeHandlers(db *sql.DB) *HandlerContainer {
+	activityRepo := repository.NewActivityLogRepository(db)
 	activityService := service.NewActivityLogService(activityRepo)
-	
-	announcementRepo := &repository.AnnouncementRepository{}
+
+	announcementRepo := repository.NewAnnouncementRepository(db)
 	announcementService := service.NewAnnouncementService(announcementRepo)
-	
-	userRepo := &repository.UserRepository{}
+
+	userRepo := repository.NewUserRepository(db)
 	authService := service.NewAuthService(userRepo)
 	userService := service.NewUserService(userRepo)
 
-	itemRepo := &repository.ItemRepository{}
+	itemRepo := repository.NewItemRepository(db)
 	catalogService := service.NewCatalogService(itemRepo)
 	itemService := service.NewItemService(itemRepo)
 
-	adminRepo := &repository.AdminRepository{}
+	adminRepo := repository.NewAdminRepository(db)
 	adminService := service.NewAdminService(adminRepo)
 
-	systemRepo := &repository.SystemRepository{}
+	systemRepo := repository.NewSystemRepository(db)
 	systemService := service.NewSystemService(systemRepo)
 
 	return &HandlerContainer{

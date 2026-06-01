@@ -62,4 +62,3 @@ func (s *UserService) ChangePassword(userID int64, currentPassword, newPassword 
 
 	return s.Repo.UpdatePassword(userID, string(newHash))
 }
-

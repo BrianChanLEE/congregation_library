@@ -4,22 +4,13 @@ import (
 	"boock/backGo/internal/models"
 	"boock/backGo/internal/repository"
 	"errors"
-	"os"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
+	"os"
 	"strconv"
 	"strings"
 	"time"
 )
-
-// getJWTKey 는 환경 변수에서 JWT 비밀키를 가져오거나 기본값을 반환합니다.
-func getJWTKey() []byte {
-	secret := os.Getenv("JWT_SECRET")
-	if secret == "" {
-		return []byte("your_secret_key") // .env 설정을 확인하세요.
-	}
-	return []byte(secret)
-}
 
 // AuthServiceInterface 는 인증 관련 비즈니스 로직을 정의하는 인터페이스입니다.
 type AuthServiceInterface interface {
@@ -78,5 +69,9 @@ func (s *AuthService) Login(congCode, email, password string) (string, error) {
 	})
 
 	// 5. 비밀키로 서명하여 토큰 반환
-	return token.SignedString(getJWTKey())
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		return "", errors.New("JWT_SECRET 환경 변수가 설정되지 않았습니다.")
+	}
+	return token.SignedString([]byte(secret))
 }

@@ -12,7 +12,7 @@ import (
 func (h *ItemHandler) GetInventory(c *gin.Context) {
 	congIDStr := c.Query("cong_id")
 	itemIDStr := c.Query("item_id")
-	
+
 	congID, _ := strconv.ParseInt(congIDStr, 10, 64)
 	itemID, _ := strconv.ParseInt(itemIDStr, 10, 64)
 

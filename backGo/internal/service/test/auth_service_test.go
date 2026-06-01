@@ -21,7 +21,7 @@ func TestAuthService_Register(t *testing.T) {
 		assert.NoError(t, err)
 		mockRepo.AssertExpectations(t)
 	})
-	
+
 	t.Run("실패 케이스 - DB 오류", func(t *testing.T) {
 		mockRepo.On("Create", mock.Anything).Return(errors.New("db error")).Once()
 		err := svc.Register("test", "password123")
@@ -31,17 +31,19 @@ func TestAuthService_Register(t *testing.T) {
 }
 
 func TestAuthService_Login(t *testing.T) {
+	t.Setenv("JWT_SECRET", "test_secret")
+
 	mockRepo := new(MockUserRepository)
 	svc := service.NewAuthService(mockRepo)
 	hashed, _ := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
 
 	tests := []struct {
-		name          string
-		congCode      string
-		email         string
-		password      string
-		mockSetup     func()
-		wantErr       bool
+		name      string
+		congCode  string
+		email     string
+		password  string
+		mockSetup func()
+		wantErr   bool
 	}{
 		{
 			name:     "성공 케이스",
@@ -77,12 +79,12 @@ func TestAuthService_Login(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name:     "로그인 실패 - 잘못된 회중 코드",
-			congCode: "abc",
-			email:    "test@jwpub.org",
-			password: "password123",
+			name:      "로그인 실패 - 잘못된 회중 코드",
+			congCode:  "abc",
+			email:     "test@jwpub.org",
+			password:  "password123",
 			mockSetup: func() {},
-			wantErr: true,
+			wantErr:   true,
 		},
 	}
 

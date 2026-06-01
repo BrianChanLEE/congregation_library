@@ -20,6 +20,7 @@ dist-ssr
 *.dll
 server
 backGo/api
+backGo/.!*
 
 # OS
 .DS_Store

@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/mock"
 	"golang.org/x/crypto/bcrypt"
 )
+
 // ...
 
 // TestUserService_UpdateUserStatus 테스트 케이스
@@ -88,7 +89,7 @@ func TestUserService_ChangePassword(t *testing.T) {
 		assert.NoError(t, err)
 		mockRepo.AssertExpectations(t)
 	})
-// ... (이전 코드)
+	// ... (이전 코드)
 	t.Run("비밀번호 불일치 케이스", func(t *testing.T) {
 		mockRepo.On("GetPasswordHash", int64(1)).Return(string(hashed), nil).Once()
 
@@ -98,7 +99,6 @@ func TestUserService_ChangePassword(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 }
-
 
 func TestUserService_DeleteUser(t *testing.T) {
 	mockRepo := new(MockUserRepository)

@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"boock/backGo/internal/db"
 	"boock/backGo/internal/models"
+	"database/sql"
 )
 
 type ActivityLogRepositoryInterface interface {
@@ -12,17 +12,23 @@ type ActivityLogRepositoryInterface interface {
 	GetDetailed() ([]map[string]interface{}, error)
 }
 
-type ActivityLogRepository struct{}
+type ActivityLogRepository struct {
+	db *sql.DB
+}
+
+func NewActivityLogRepository(db *sql.DB) *ActivityLogRepository {
+	return &ActivityLogRepository{db: db}
+}
 
 func (r *ActivityLogRepository) Create(log *models.ActivityLog) error {
 	query := "INSERT INTO activity_logs (user_id, item_id, quantity, type, method, memo) VALUES (?, ?, ?, ?, ?, ?)"
-	_, err := db.DB.Exec(query, log.UserID, log.ItemID, log.Quantity, log.Type, log.Method, log.Memo)
+	_, err := r.db.Exec(query, log.UserID, log.ItemID, log.Quantity, log.Type, log.Method, log.Memo)
 	return err
 }
 
 func (r *ActivityLogRepository) GetAll() ([]models.ActivityLog, error) {
 	query := "SELECT al.id, al.user_id, al.item_id, al.quantity, al.type, al.method, al.memo, al.created_at, u.name, i.name FROM activity_logs al JOIN users u ON al.user_id = u.id JOIN items i ON al.item_id = i.id ORDER BY al.created_at DESC"
-	rows, err := db.DB.Query(query)
+	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -40,14 +46,14 @@ func (r *ActivityLogRepository) GetAll() ([]models.ActivityLog, error) {
 }
 
 func (r *ActivityLogRepository) UpdateType(id int64, logType string) error {
-	_, err := db.DB.Exec("UPDATE activity_logs SET type = ? WHERE id = ?", logType, id)
+	_, err := r.db.Exec("UPDATE activity_logs SET type = ? WHERE id = ?", logType, id)
 	return err
 }
 
 func (r *ActivityLogRepository) GetDetailed() ([]map[string]interface{}, error) {
 	// This is a simplified version of the old audit log query
 	query := "SELECT a.id, a.created_at, i.name, a.quantity, u.name, a.memo, a.type FROM activity_logs a LEFT JOIN items i ON a.item_id = i.id LEFT JOIN users u ON a.user_id = u.id ORDER BY a.created_at DESC"
-	rows, err := db.DB.Query(query)
+	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, err
 	}

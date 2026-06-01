@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"boock/backGo/internal/db"
 	"boock/backGo/internal/models"
+	"database/sql"
 )
 
 // ItemRepositoryInterface는 품목 저장소의 동작을 정의합니다.
@@ -16,27 +16,29 @@ type ItemRepositoryInterface interface {
 	GetCategories() ([]string, error)
 }
 
-type ItemRepository struct{}
+type ItemRepository struct {
+	db *sql.DB
+}
 
-func NewItemRepository() *ItemRepository {
-	return &ItemRepository{}
+func NewItemRepository(db *sql.DB) *ItemRepository {
+	return &ItemRepository{db: db}
 }
 
 func (r *ItemRepository) Create(item *models.Item) error {
 	query := "INSERT INTO items (code, name) VALUES (?, ?)"
-	_, err := db.DB.Exec(query, item.Code, item.Name)
+	_, err := r.db.Exec(query, item.Code, item.Name)
 	return err
 }
 
 func (r *ItemRepository) Update(item *models.Item) error {
 	query := "UPDATE items SET name = ?, code = ? WHERE id = ?"
-	_, err := db.DB.Exec(query, item.Name, item.Code, item.ID)
+	_, err := r.db.Exec(query, item.Name, item.Code, item.ID)
 	return err
 }
 
 func (r *ItemRepository) GetAll() ([]models.Item, error) {
 	query := "SELECT id, code, name FROM items WHERE deleted_at IS NULL"
-	rows, err := db.DB.Query(query)
+	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +57,7 @@ func (r *ItemRepository) GetAll() ([]models.Item, error) {
 
 func (r *ItemRepository) GetCatalog() ([]models.Item, error) {
 	query := "SELECT id, code, name FROM items WHERE deleted_at IS NULL"
-	rows, err := db.DB.Query(query)
+	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -78,10 +80,10 @@ func (r *ItemRepository) GetInventory(congID, itemID int64) (models.Inventory, e
 		       COALESCE(SUM(CASE WHEN a.type='IN' THEN a.quantity ELSE -a.quantity END), 0) as stock
 		FROM items i
 		LEFT JOIN activity_logs a ON i.id = a.item_id
-		WHERE i.id = ? AND i.deleted_at IS NULL
-		GROUP BY i.id`
-	
-	row := db.DB.QueryRow(query, itemID)
+	WHERE i.id = ? AND i.deleted_at IS NULL
+	GROUP BY i.id`
+
+	row := r.db.QueryRow(query, itemID)
 	var inv models.Inventory
 	err := row.Scan(&inv.ID, &inv.Code, &inv.Name, &inv.Stock)
 	if err != nil {
@@ -92,12 +94,12 @@ func (r *ItemRepository) GetInventory(congID, itemID int64) (models.Inventory, e
 
 func (r *ItemRepository) Delete(id int64) error {
 	query := "UPDATE items SET deleted_at = NOW() WHERE id = ?"
-	_, err := db.DB.Exec(query, id)
+	_, err := r.db.Exec(query, id)
 	return err
 }
 
 func (r *ItemRepository) GetCategories() ([]string, error) {
-	rows, err := db.DB.Query("SELECT DISTINCT category FROM items WHERE category IS NOT NULL")
+	rows, err := r.db.Query("SELECT DISTINCT category FROM items WHERE category IS NOT NULL")
 	if err != nil {
 		return nil, err
 	}

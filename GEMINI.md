@@ -49,6 +49,11 @@
   - **Service**: `backGo/internal/service/` - 비즈니스 로직 처리. `Constructor Injection`으로 필요한 `Repository` 인터페이스를 주입받음.
   - **Repository**: `backGo/internal/repository/` - DB 쿼리 및 데이터 액세스 캡슐화.
   - **위반 정의**: `Handler`나 `Service`가 `db.*` (DB 패키지) 직접 호출 시 규칙 위반. DB 접근은 반드시 `Repository` 인터페이스를 통해서만 수행.
+  - **DB 주입 원칙**: `*sql.DB`는 전역 변수로 두지 않고, 앱 시작 시 생성 후 `Repository` 생성자에 주입(필요 시 트랜잭션은 `*sql.DB/*sql.Tx`를 명시적으로 전달).
+
+- **Operational Hygiene**:
+  - **No Artifacts in Git**: 바이너리/커버리지/에디터 임시파일은 Git에 커밋하지 않는다 (예: `backGo/api`, `coverage.out`, `backGo/.!*`).
+  - **Env Safety**: `JWT_SECRET` 및 DB 접속 정보는 필수 환경 변수로 간주하며, 누락 시 서버는 즉시 실패(fail-fast)해야 한다. 기본값(secret fallback) 사용 금지.
 
 - **Testing**: 모든 API 엔드포인트 및 서비스 로직에 대해 **Table-driven Unit Test 작성(`_test.go`)을 의무화**하며, 다음 기준을 충족해야 한다:
     - 모든 테스트 코드는 각 패키지 하위의 `test/` 폴더에 저장한다.

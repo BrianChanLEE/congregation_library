@@ -70,7 +70,7 @@ func Init() {
 
 	handler := slog.NewTextHandler(os.Stdout, opts)
 	Log = slog.New(handler)
-	
+
 	// GIN 전용 로거 (포맷팅 없이 메시지만 출력)
 	GinLog = slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
 		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {

@@ -1,9 +1,9 @@
 package api_test
 
 import (
-	"bytes"
 	"boock/backGo/internal/api"
 	"boock/backGo/internal/models"
+	"bytes"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -138,7 +138,7 @@ func TestAdminHandler(t *testing.T) {
 			r.ServeHTTP(w, req)
 			assert.Equal(t, http.StatusBadRequest, w.Code)
 		})
-		
+
 		t.Run("바인딩 에러", func(t *testing.T) {
 			w := httptest.NewRecorder()
 			_, r := gin.CreateTestContext(w)
@@ -184,7 +184,7 @@ func TestAdminHandler(t *testing.T) {
 			r.ServeHTTP(w, req)
 			assert.Equal(t, http.StatusInternalServerError, w.Code)
 		})
-		
+
 		t.Run("잘못된 ID", func(t *testing.T) {
 			w := httptest.NewRecorder()
 			_, r := gin.CreateTestContext(w)

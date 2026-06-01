@@ -1,8 +1,8 @@
 package main
 
 import (
-	"boock/backGo/internal/http"
 	"boock/backGo/internal/db"
+	"boock/backGo/internal/http"
 	"boock/backGo/internal/logger"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -12,12 +12,24 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	_ = godotenv.Load()
 
 	logger.Init()
 	logger.Log.Info("서버 시작 중...")
+
+	requiredEnv := []string{
+		"DB_USER",
+		"DB_PASSWORD",
+		"DB_HOST",
+		"DB_PORT",
+		"DB_NAME",
+		"JWT_SECRET",
+	}
+	for _, key := range requiredEnv {
+		if os.Getenv(key) == "" {
+			log.Fatalf("필수 환경 변수가 누락되었습니다: %s", key)
+		}
+	}
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		os.Getenv("DB_USER"),
@@ -26,7 +38,11 @@ func main() {
 		os.Getenv("DB_PORT"),
 		os.Getenv("DB_NAME"),
 	)
-	db.InitDB(dsn)
+	sqlDB, err := db.Open(dsn)
+	if err != nil {
+		log.Fatalf("DB 연결 실패: %v", err)
+	}
+	defer sqlDB.Close()
 
 	ginWriter := &logger.GinWriter{}
 	gin.DefaultWriter = ginWriter
@@ -38,7 +54,7 @@ func main() {
 	r.Use(gin.Logger(), gin.Recovery())
 
 	// Initialize and Setup Routes
-	h := http.InitializeHandlers()
+	h := http.InitializeHandlers(sqlDB)
 	http.SetupRoutes(r, h)
 
 	port := os.Getenv("PORT")

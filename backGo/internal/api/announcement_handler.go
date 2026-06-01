@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 )
+
 // ...
 
 // AnnouncementHandler는 공지사항 관련 핸들러를 관리합니다.
@@ -50,6 +51,7 @@ func (h *AnnouncementHandler) AddAnnouncement(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, gin.H{"message": "공지사항 등록 성공"})
 }
+
 // ... existing methods ...
 
 // UpdateAnnouncement 공지사항 수정
@@ -94,4 +96,3 @@ func (h *AnnouncementHandler) DeleteAnnouncement(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "공지사항 삭제 성공"})
 }
-
