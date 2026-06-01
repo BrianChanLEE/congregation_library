@@ -14,3 +14,17 @@ apiClient.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Note 3: 인증 만료/무효(401)일 때는 토큰을 제거하고 로그인 화면으로 이동합니다.
+apiClient.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err?.response?.status === 401) {
+      useAuthStore.getState().logout();
+      if (typeof window !== 'undefined') {
+        window.location.assign('/login');
+      }
+    }
+    return Promise.reject(err);
+  }
+);

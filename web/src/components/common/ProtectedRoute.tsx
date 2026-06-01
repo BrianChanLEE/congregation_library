@@ -13,7 +13,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) 
     return <Navigate to="/login" replace />;
   }
 
-  if (requiredRole && role !== requiredRole.toUpperCase()) {
+  if (requiredRole && role !== requiredRole) {
     return <Navigate to="/" replace />;
   }
 
