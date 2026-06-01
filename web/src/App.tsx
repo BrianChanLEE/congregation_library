@@ -15,7 +15,7 @@ import { QrScanScreen } from './screens/QrScanScreen';
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Suspense fallback={<div className="flex h-screen items-center justify-center">로딩 중...</div>}>
           <Routes>
             <Route path="/login" element={<LoginScreen />} />
