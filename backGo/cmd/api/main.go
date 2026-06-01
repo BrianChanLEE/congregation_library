@@ -43,6 +43,9 @@ func main() {
 		log.Fatalf("DB 연결 실패: %v", err)
 	}
 	defer sqlDB.Close()
+	if err := db.EnsureSchema(sqlDB); err != nil {
+		log.Fatalf("DB 스키마 점검/보정 실패: %v", err)
+	}
 
 	ginWriter := &logger.GinWriter{}
 	gin.DefaultWriter = ginWriter
