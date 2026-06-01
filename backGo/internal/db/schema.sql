@@ -25,7 +25,7 @@ CREATE TABLE activity_logs (
     user_id BIGINT UNSIGNED COMMENT '작업자 식별자',
     item_id BIGINT UNSIGNED NOT NULL COMMENT '품목 식별자',
     quantity INT NOT NULL COMMENT '수량 (+/-)',
-    type ENUM('IN', 'OUT') NOT NULL COMMENT '입고/출고 구분',
+    type ENUM('IN', 'OUT', 'CANCEL') NOT NULL COMMENT '입고/출고/취소 구분',
     method ENUM('WEB', 'QR') NOT NULL COMMENT '작업 방식',
     memo TEXT COMMENT '메모',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '기록 일시',
